@@ -14,29 +14,34 @@
 
 package com.generator.actions.impl;
 
+import com.generator.actions.GenerateAllSetterBase;
+import com.generator.utils.MenuNameConstants;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author guohao
  * @since 2021/1/20
  */
-public interface GeneratorConfig {
+public class GenerateAllSetterFromArgsAction extends GenerateAllSetterBase {
 
-    default boolean shouldAddDefaultValue() {
-        return false;
+    @NotNull
+    @Override
+    public String getText() {
+        return MenuNameConstants.GENERATE_SETTER_FROM_ARGS_METHOD;
     }
 
-    default boolean isFromMethod(){
-        return false;
-    }
+    @Override
+    public GeneratorConfig getGeneratorConfig() {
+        return new GeneratorConfig() {
+            @Override
+            public boolean shouldAddDefaultValue() {
+                return true;
+            }
 
-    default String formatLine(String line) {
-        return line;
-    }
-
-    default boolean forBuilder() {
-        return false;
-    }
-
-    default boolean fromParam(){
-        return false;
+            @Override
+            public boolean fromParam() {
+                return true;
+            }
+        };
     }
 }

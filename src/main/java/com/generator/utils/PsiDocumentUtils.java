@@ -16,7 +16,10 @@ package com.generator.utils;
 
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiLocalVariable;
 
 /**
  * @author guohao
@@ -29,5 +32,12 @@ public class PsiDocumentUtils {
             psiDocumentManager.commitDocument(document);
             FileDocumentManager.getInstance().saveDocument(document);
         }
+    }
+
+    public static Document getDocument(PsiLocalVariable localVariable){
+        Project project = localVariable.getProject();
+        PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(project);
+        PsiFile containingFile = localVariable.getContainingFile();
+        return psiDocumentManager.getDocument(containingFile);
     }
 }

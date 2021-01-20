@@ -25,11 +25,11 @@
         </intentionAction>
 
         <intentionAction>
-            <className>com.generator.actions.impl.AssertJAssertAllGetterAction</className>
+            <className>com.generator.actions.impl.GenerateSetterGetterFromFunctionAction</className>
         </intentionAction>
 
         <intentionAction>
-            <className>com.generator.actions.impl.GenerateSetterGetterFromFunctionAction</className>
+            <className>com.generator.actions.impl.GenerateAllSetterFromArgsAction</className>
         </intentionAction>
     </extensions>
 </idea-plugin>

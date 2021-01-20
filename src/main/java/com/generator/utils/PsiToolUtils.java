@@ -19,7 +19,6 @@ import com.generator.RealParam;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -36,12 +35,13 @@ import java.util.*;
  */
 public class PsiToolUtils {
 
-    public static boolean checkGuavaExist(Project project, @NotNull PsiElement element) {
+    public static boolean checkGuavaExist(@NotNull PsiElement element) {
         Module moduleForPsiElement = ModuleUtilCore.findModuleForPsiElement(element);
         if(moduleForPsiElement==null){
             return false;
         }
-        PsiClass[] lists = PsiShortNamesCache.getInstance(project).getClassesByName("Lists", GlobalSearchScope.moduleRuntimeScope(moduleForPsiElement, false));
+        PsiClass[] lists = PsiShortNamesCache.getInstance(element.getProject())
+                .getClassesByName("Lists", GlobalSearchScope.moduleRuntimeScope(moduleForPsiElement, false));
         for (PsiClass psiClass : lists) {
             if (Objects.equals(psiClass.getQualifiedName(), "com.google.common.collect.Lists")){
                 return true;
@@ -126,20 +126,21 @@ public class PsiToolUtils {
         return fullName.substring(fullName.lastIndexOf(".") + 1);
     }
 
+    /**
+     * <p>'\n + 当前变量所在行行首的空格数'。</p>
+     * <p>用于在最后生成的的语句前填充。</p>
+     */
     @NotNull
-    public static String calculateSplitText(Document document, int statementOffset) {
-        String splitText = "";
-        int cur = statementOffset;
-        String text = document.getText(new TextRange(cur - 1, cur));
-        while (text.equals(" ") || text.equals("\t")) {
-            splitText = text + splitText;
-            cur--;
-            if (cur < 1) {
-                break;
-            }
-            text = document.getText(new TextRange(cur - 1, cur));
-        }
-        splitText = "\n" + splitText;
-        return splitText;
+    public static String calculateSplitText(PsiLocalVariable localVariable) {
+        Document document = PsiDocumentUtils.getDocument(localVariable);
+        StringBuilder result = new StringBuilder("\n");
+
+        int cur = localVariable.getParent().getTextOffset();
+        String text = "";
+        do {
+            result.append(text);
+            text = document.getText(new TextRange(cur - 1, cur--));
+        } while ((cur >= 1) && (text.equals(" ") || text.equals("\t")));
+        return result.toString();
     }
 }
