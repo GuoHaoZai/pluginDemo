@@ -1,0 +1,35 @@
+<idea-plugin>
+    <id>org.example.pluginDemo</id>
+    <name>Plugin display name here</name>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+
+    <description><![CDATA[test]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <intentionAction>
+            <className>com.generator.actions.impl.GenerateAllSetterAction</className>
+        </intentionAction>
+        <intentionAction>
+            <className>com.generator.actions.impl.GenerateWithBuilderAction</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>com.generator.actions.impl.GenerateAllSetterNoDefaultValueAction</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>com.generator.actions.impl.AssertJAssertAllGetterAction</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>com.generator.actions.impl.GenerateSetterGetterFromFunctionAction</className>
+        </intentionAction>
+    </extensions>
+</idea-plugin>
