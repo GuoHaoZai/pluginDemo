@@ -7,7 +7,6 @@ package com.generator.actions;
 public class MethodPrefixConstants {
     public static final String IS = "is";
     public static final String GET = "get";
-    public static final String STATIC = "static";
     public static final String WITH = "with";
     public static final String SET = "set";
 }
