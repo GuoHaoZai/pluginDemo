@@ -93,7 +93,8 @@ public class PsiClassUtils {
      * 抽取出当前类的指定方法
      */
     private static List<PsiMethod> extractMethods(PsiClass psiClass, Predicate<PsiMethod> predicate) {
-        return Optional.of(psiClass.getMethods())
+        return Optional.ofNullable(psiClass)
+                .map(PsiClass::getMethods)
                 .map(Arrays::asList)
                 .orElse(Collections.emptyList()).stream()
                 .filter(predicate)
@@ -104,11 +105,13 @@ public class PsiClassUtils {
      * 抽取出类(包括父类,不包括系统类)的GETTER方法
      */
     private static List<PsiMethod> extractAllMethods(final PsiClass psiClass, Predicate<PsiMethod> predicate) {
-        return Optional.of(psiClass.getSupers())
+        return Optional.ofNullable(psiClass)
+                .map(PsiClass::getSupers)
                 .map(Arrays::asList)
                 .map(list->{
-                    list.add(psiClass);
-                    return list;
+                    List<PsiClass> result = new ArrayList<>(list);
+                    result.add(psiClass);
+                    return result;
                 })
                 .orElse(Collections.emptyList()).stream()
                 .filter(PsiClassUtils::isNotSystemClass)
