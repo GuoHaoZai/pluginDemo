@@ -27,7 +27,7 @@ public class GenerateAllSetterNoDefaultValueAction extends GenerateAllSetterBase
     @NotNull
     @Override
     public String getText() {
-        return MenuNameConstants.GENERATE_SETTER_METHOD_NO_DEAULT_VALUE;
+        return MenuNameConstants.GENERATE_SETTER_METHOD_NO_DEFAULT_VALUE;
     }
 
     @Override

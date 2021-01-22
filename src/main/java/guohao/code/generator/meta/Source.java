@@ -14,8 +14,8 @@ public enum Source {
     JAVA(0, element -> true),
     GUAVA(1, PsiToolUtils::containGuava);
 
-    private Integer index;
-    private Predicate<PsiElement> canUse;
+    private final Integer index;
+    private final Predicate<PsiElement> canUse;
 
     Source(Integer index, Predicate<PsiElement> canUse) {
         this.index = index;

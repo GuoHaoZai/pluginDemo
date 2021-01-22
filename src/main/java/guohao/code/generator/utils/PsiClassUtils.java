@@ -14,6 +14,7 @@
 
 package guohao.code.generator.utils;
 
+import com.intellij.psi.PsiModifier;
 import guohao.code.generator.actions.MethodPrefixConstants;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiMethod;
@@ -76,8 +77,8 @@ public final class PsiClassUtils {
      * 判断当前方法是否是SETTER
      */
     private static boolean isSetMethod(PsiMethod m) {
-        return m.hasModifierProperty("public") &&
-                !m.hasModifierProperty("static") &&
+        return m.hasModifierProperty(PsiModifier.PUBLIC) &&
+                !m.hasModifierProperty(PsiModifier.STATIC) &&
                 (m.getName().startsWith(MethodPrefixConstants.SET) || m.getName().startsWith(MethodPrefixConstants.WITH));
     }
 
@@ -85,7 +86,7 @@ public final class PsiClassUtils {
      * 判断当前方法是否是GETTER
      */
     private static boolean isGetMethod(PsiMethod m) {
-        return m.hasModifierProperty("public") && !m.hasModifierProperty("static") &&
+        return m.hasModifierProperty(PsiModifier.PUBLIC) && !m.hasModifierProperty(PsiModifier.STATIC) &&
                 (m.getName().startsWith(MethodPrefixConstants.GET) || m.getName().startsWith(MethodPrefixConstants.IS));
     }
 

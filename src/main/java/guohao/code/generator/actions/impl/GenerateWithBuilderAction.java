@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateWithBuilderAction extends GenerateAllSetterBase implements GeneratorConfig{
+public class GenerateWithBuilderAction extends GenerateAllSetterBase{
 
     @Override
     public GeneratorConfig getGeneratorConfig() {

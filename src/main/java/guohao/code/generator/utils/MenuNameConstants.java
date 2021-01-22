@@ -25,8 +25,8 @@ public final class MenuNameConstants {
 
     public static final String GENERATE_SETTER_METHOD = "Generate all setter with default value";
     public static final String GENERATE_SETTER_FROM_ARGS_METHOD = "Generate all setter from args";
-    public static final String GENERATE_BUILDER_METHOD = "Generate builder chain call";
-    public static final String GENERATE_SETTER_METHOD_NO_DEAULT_VALUE = "Generate all setter no default value";
+    public static final String GENERATE_SETTER_METHOD_NO_DEFAULT_VALUE = "Generate all setter no default value";
 
+    public static final String GENERATE_BUILDER_METHOD = "Generate builder chain call";
     public static final String BUILDER_METHOD_NAME = "builder";
 }
