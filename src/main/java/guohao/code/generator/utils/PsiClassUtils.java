@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
  * @author guohao
  * @since 2021/1/20
  */
-public class PsiClassUtils {
-
+public final class PsiClassUtils {
+    private PsiClassUtils() {}
 
     /**
      * 抽取出类(包括父类)的SETTER方法

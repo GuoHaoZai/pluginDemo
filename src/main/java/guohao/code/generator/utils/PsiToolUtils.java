@@ -32,7 +32,9 @@ import java.util.Optional;
  * @author guohao
  * @since 2021/1/20
  */
-public class PsiToolUtils {
+public final class PsiToolUtils {
+
+    private PsiToolUtils() {}
 
     /**
      * 检查当前元素所在的模块是否包含guava类

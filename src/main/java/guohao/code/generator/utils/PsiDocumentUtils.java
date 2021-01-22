@@ -25,7 +25,9 @@ import com.intellij.psi.PsiFile;
  * @author guohao
  * @since 2021/1/20
  */
-public class PsiDocumentUtils {
+public final class PsiDocumentUtils {
+
+    private PsiDocumentUtils() {}
 
     public static void commitAndSaveDocument(PsiElement element, Document document) {
         PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(element.getProject());

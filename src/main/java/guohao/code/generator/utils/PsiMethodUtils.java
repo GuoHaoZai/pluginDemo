@@ -14,7 +14,9 @@ import java.util.Optional;
  * @author guohao
  * @since 2021/1/22
  */
-public class PsiMethodUtils {
+public final class PsiMethodUtils {
+
+    private PsiMethodUtils() {}
 
     /**
      * 获取方法的参数列表

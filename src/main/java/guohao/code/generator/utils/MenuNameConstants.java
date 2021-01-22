@@ -21,8 +21,7 @@ package guohao.code.generator.utils;
  * @since 2021/1/20
  */
 public final class MenuNameConstants {
-    private MenuNameConstants() {
-    }
+    private MenuNameConstants() {}
 
     public static final String GENERATE_SETTER_METHOD = "Generate all setter with default value";
     public static final String GENERATE_SETTER_FROM_ARGS_METHOD = "Generate all setter from args";
