@@ -14,18 +14,18 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <intentionAction>
-            <className>guohao.code.generator.actions.impl.GenerateAllSetterAction</className>
+            <className>guohao.code.generator.actions.impl.GenerateSetterAction</className>
         </intentionAction>
         <intentionAction>
-            <className>guohao.code.generator.actions.impl.GenerateWithBuilderAction</className>
-        </intentionAction>
-
-        <intentionAction>
-            <className>guohao.code.generator.actions.impl.GenerateAllSetterNoDefaultValueAction</className>
+            <className>guohao.code.generator.actions.GenerateBuilderAction</className>
         </intentionAction>
 
         <intentionAction>
-            <className>guohao.code.generator.actions.impl.GenerateAllSetterFromArgsAction</className>
+            <className>guohao.code.generator.actions.impl.GenerateSetterNoDefaultValueAction</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>guohao.code.generator.actions.impl.GenerateSetterFromArgsAction</className>
         </intentionAction>
     </extensions>
 </idea-plugin>

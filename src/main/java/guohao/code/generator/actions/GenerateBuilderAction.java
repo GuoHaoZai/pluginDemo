@@ -12,7 +12,7 @@
  *    along with this program;
  */
 
-package guohao.code.generator.actions.impl;
+package guohao.code.generator.actions;
 
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.codeInspection.util.IntentionFamilyName;
@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateWithBuilderAction extends PsiElementBaseIntentionAction {
+public class GenerateBuilderAction extends PsiElementBaseIntentionAction {
 
     @Override
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {

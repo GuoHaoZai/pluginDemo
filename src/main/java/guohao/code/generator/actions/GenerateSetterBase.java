@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @author guohao
  * @since 2021/1/20
  */
-public abstract class GenerateAllSetterBase extends PsiElementBaseIntentionAction {
+public abstract class GenerateSetterBase extends PsiElementBaseIntentionAction {
     private final GeneratorConfig generatorConfig = getGeneratorConfig();
 
     public abstract GeneratorConfig getGeneratorConfig();

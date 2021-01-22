@@ -14,7 +14,7 @@
 
 package guohao.code.generator.actions.impl;
 
-import guohao.code.generator.actions.GenerateAllSetterBase;
+import guohao.code.generator.actions.GenerateSetterBase;
 import guohao.code.generator.constant.MenuNameConstants;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,12 +22,12 @@ import org.jetbrains.annotations.NotNull;
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateAllSetterNoDefaultValueAction extends GenerateAllSetterBase {
+public class GenerateSetterAction extends GenerateSetterBase {
 
     @NotNull
     @Override
     public String getText() {
-        return MenuNameConstants.GENERATE_SETTER_METHOD_NO_DEFAULT_VALUE;
+        return MenuNameConstants.GENERATE_SETTER_METHOD;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class GenerateAllSetterNoDefaultValueAction extends GenerateAllSetterBase
         return new GeneratorConfig() {
             @Override
             public boolean shouldAddDefaultValue() {
-                return false;
+                return true;
             }
         };
     }
