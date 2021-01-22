@@ -14,15 +14,29 @@
 
 package guohao.code.generator.actions.impl;
 
-import guohao.code.generator.actions.GenerateSetterBase;
+import com.intellij.psi.PsiLocalVariable;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiParameter;
+import com.intellij.psi.PsiType;
+import guohao.code.generator.actions.AbstractGenerateSetterAction;
 import guohao.code.generator.constant.MenuNameConstants;
+import guohao.code.generator.meta.BasicClassInfo;
+import guohao.code.generator.meta.ClassInfo;
+import guohao.code.generator.utils.ClassNameUtils;
+import guohao.code.generator.utils.PsiMethodUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateSetterAction extends GenerateSetterBase {
+public class GenerateSetterAction extends AbstractGenerateSetterAction {
 
     @NotNull
     @Override
@@ -30,13 +44,35 @@ public class GenerateSetterAction extends GenerateSetterBase {
         return MenuNameConstants.GENERATE_SETTER_METHOD;
     }
 
+    //region 生成默认参数
+    /**
+     * 解析SETTER方法
+     */
     @Override
-    public GeneratorConfig getGeneratorConfig() {
-        return new GeneratorConfig() {
-            @Override
-            public boolean shouldAddDefaultValue() {
-                return true;
-            }
-        };
+    protected List<ClassInfo> parseMethod(PsiLocalVariable localVariable, PsiMethod setterMethod) {
+        return Optional.of(setterMethod)
+                .map(PsiMethodUtils::getPsiParameters).orElse(Collections.emptyList())
+                .stream()
+                .map(this::parseParameter)
+                .collect(Collectors.toList());
     }
+
+    /**
+     * 根据每一个参数的类型
+     * @param parameter
+     * @return
+     */
+    @NotNull
+    private ClassInfo parseParameter(PsiParameter parameter) {
+        return Optional.ofNullable(parameter)
+                .map(PsiParameter::getType)
+                .map(PsiType::getCanonicalText)
+                .map(ClassNameUtils::removeGeneric)
+                .map(BasicClassInfo::get).orElse(Collections.emptyList())
+                .stream()
+                .filter(basicClassInfo -> basicClassInfo.getSource().getCanUse().test(parameter))
+                .min(Comparator.comparingInt(cl -> cl.getSource().getIndex()))
+                .orElse(BasicClassInfo.NULL);
+    }
+    //endregion
 }

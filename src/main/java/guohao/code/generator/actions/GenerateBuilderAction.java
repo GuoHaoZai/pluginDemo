@@ -16,17 +16,23 @@ package guohao.code.generator.actions;
 
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.codeInspection.util.IntentionFamilyName;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiType;
 import com.intellij.psi.util.PsiTypesUtil;
 import com.intellij.util.IncorrectOperationException;
-import guohao.code.generator.constant.MethodPrefixConstants;
 import guohao.code.generator.constant.MenuNameConstants;
+import guohao.code.generator.constant.MethodPrefixConstants;
 import guohao.code.generator.utils.PsiClassUtils;
+import guohao.code.generator.utils.PsiDocumentUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * @author guohao
@@ -36,56 +42,58 @@ public class GenerateBuilderAction extends PsiElementBaseIntentionAction {
 
     @Override
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
-        PsiClass localVariableContainingClass = PsiClassUtils.buildFrom(element);
-        for (PsiMethod method : localVariableContainingClass.getMethods()) {
+        PsiClass publicClass = PsiClassUtils.buildFrom(element);
+        for (PsiMethod method : publicClass.getMethods()) {
             if (method.getName().equals(MethodPrefixConstants.BUILDER)) {
+
                 PsiType returnType = method.getReturnType();
-                PsiClass psiClass = PsiTypesUtil.getPsiClass(returnType);
-                StringBuilder builder = new StringBuilder(localVariableContainingClass.getQualifiedName() + ".builder()");
-                for (PsiMethod psiClassMethod : psiClass.getMethods()) {
-                    if (!psiClassMethod.isConstructor() && !psiClassMethod.getName().equals("toString")
-                            && !psiClassMethod.getName().equals("build")) {
-                        builder.append(".").append(psiClassMethod.getName()).append("()");
-                    }
-                }
-                builder.append(".build();");
+                PsiClass buildClass = PsiTypesUtil.getPsiClass(returnType);
+
+                String text = buildText(publicClass, buildClass);
 
                 // insert into the element.
-                Document document = PsiDocumentManager.getInstance(project).getDocument(element.getContainingFile());
-
-                WriteCommandAction.runWriteCommandAction(project, () -> {
-                    document.insertString(element.getTextRange().getEndOffset() + 2, builder.toString());
-                    PsiDocumentManager.getInstance(project).commitDocument(document);
-                });
-
+                Document document = PsiDocumentUtils.getDocument(element);
+                document.insertString(element.getTextRange().getEndOffset() + 2, text);
+                PsiDocumentUtils.commitAndSaveDocument(element, document);
             }
         }
     }
 
+    private String buildText(PsiClass publicClass, PsiClass buildClass) {
+        if (!Objects.equals(publicClass.getText(), buildClass.getText())) {
+            StringBuilder builder = new StringBuilder(publicClass.getQualifiedName() + ".builder()");
+            for (PsiMethod psiClassMethod : buildClass.getMethods()) {
+
+                if (!psiClassMethod.isConstructor()
+                        && !psiClassMethod.getName().equals("toString")
+                        && !psiClassMethod.getName().equals(MethodPrefixConstants.BUILD)) {
+
+                    builder.append(".").append(psiClassMethod.getName()).append("()");
+                }
+            }
+            return builder.append(".").append(MethodPrefixConstants.BUILD + "();").toString();
+        }
+        return StringUtils.EMPTY;
+    }
+
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
-        PsiClass localVarialbeContainingClass = PsiClassUtils.buildFrom(element);
-        if (localVarialbeContainingClass == null) {
+        PsiClass psiClass = PsiClassUtils.buildFrom(element);
+        if (psiClass == null) {
             return false;
         }
-        PsiMethod[] methods = localVarialbeContainingClass.getMethods();
-        for (PsiMethod method : methods) {
-            if (method.getName().equals(MethodPrefixConstants.BUILDER) && method.hasModifierProperty(PsiModifier.STATIC)) {
-                return true;
-            }
-        }
-        return false;
+        return PsiClassUtils.hasBuilderMethod(psiClass);
     }
 
 
     @NotNull
     @Override
     public String getText() {
-        return MenuNameConstants.GENERATOR;
+        return MenuNameConstants.GENERATE_BUILDER_METHOD;
     }
 
     @Override
     public @NotNull @IntentionFamilyName String getFamilyName() {
-        return MenuNameConstants.GENERATE_BUILDER_METHOD;
+        return MenuNameConstants.GENERATOR;
     }
 }

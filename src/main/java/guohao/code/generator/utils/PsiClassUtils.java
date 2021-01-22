@@ -57,6 +57,20 @@ public final class PsiClassUtils {
     }
 
     /**
+     * 当前类是否包含Builder方法
+     */
+    public static boolean hasBuilderMethod(final PsiClass psiClass){
+        PsiMethod[] methods = psiClass.getMethods();
+        for (PsiMethod method : methods) {
+            if (method.getName().equals(MethodPrefixConstants.BUILDER)
+                    && method.hasModifierProperty(PsiModifier.STATIC)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 检查当前类(<b>包括父类</b>)是否包含GETTER
      */
     public static boolean hasGetterMethod(final PsiClass psiClass) {

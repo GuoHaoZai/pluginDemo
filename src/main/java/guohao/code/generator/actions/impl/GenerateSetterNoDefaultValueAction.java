@@ -14,15 +14,23 @@
 
 package guohao.code.generator.actions.impl;
 
-import guohao.code.generator.actions.GenerateSetterBase;
+import com.intellij.psi.PsiLocalVariable;
+import com.intellij.psi.PsiMethod;
+import guohao.code.generator.actions.AbstractGenerateSetterAction;
 import guohao.code.generator.constant.MenuNameConstants;
+import guohao.code.generator.meta.ClassInfo;
+import guohao.code.generator.meta.CustomClassInfo;
+import guohao.code.generator.meta.Source;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateSetterNoDefaultValueAction extends GenerateSetterBase {
+public class GenerateSetterNoDefaultValueAction extends AbstractGenerateSetterAction {
 
     @NotNull
     @Override
@@ -30,13 +38,10 @@ public class GenerateSetterNoDefaultValueAction extends GenerateSetterBase {
         return MenuNameConstants.GENERATE_SETTER_METHOD_NO_DEFAULT_VALUE;
     }
 
+    //region 生成空参数
     @Override
-    public GeneratorConfig getGeneratorConfig() {
-        return new GeneratorConfig() {
-            @Override
-            public boolean shouldAddDefaultValue() {
-                return false;
-            }
-        };
+    protected List<ClassInfo> parseMethod(PsiLocalVariable localVariable, PsiMethod setterMethod) {
+        return Collections.singletonList(new CustomClassInfo("", "", "", Source.OTHER));
     }
+    //endregion
 }

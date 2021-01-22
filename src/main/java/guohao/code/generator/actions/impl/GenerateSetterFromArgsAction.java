@@ -14,15 +14,33 @@
 
 package guohao.code.generator.actions.impl;
 
-import guohao.code.generator.actions.GenerateSetterBase;
+import com.intellij.psi.PsiLocalVariable;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiParameter;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiTypesUtil;
+import guohao.code.generator.actions.AbstractGenerateSetterAction;
 import guohao.code.generator.constant.MenuNameConstants;
+import guohao.code.generator.constant.MethodPrefixConstants;
+import guohao.code.generator.meta.BasicClassInfo;
+import guohao.code.generator.meta.ClassInfo;
+import guohao.code.generator.meta.CustomClassInfo;
+import guohao.code.generator.meta.Source;
+import guohao.code.generator.utils.PsiClassUtils;
+import guohao.code.generator.utils.PsiMethodUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateSetterFromArgsAction extends GenerateSetterBase {
+public class GenerateSetterFromArgsAction extends AbstractGenerateSetterAction {
 
     @NotNull
     @Override
@@ -30,18 +48,46 @@ public class GenerateSetterFromArgsAction extends GenerateSetterBase {
         return MenuNameConstants.GENERATE_SETTER_FROM_ARGS_METHOD;
     }
 
+    //region 从方法入参提取参数
     @Override
-    public GeneratorConfig getGeneratorConfig() {
-        return new GeneratorConfig() {
-            @Override
-            public boolean shouldAddDefaultValue() {
-                return true;
-            }
+    protected List<ClassInfo> parseMethod(PsiLocalVariable localVariable, PsiMethod setterMethod){
+        List<PsiParameter> methodParameters = Optional.of(localVariable)
+                .map(variable -> PsiTreeUtil.getParentOfType(variable, PsiMethod.class))
+                .map(PsiMethodUtils::getPsiParameters).orElse(Collections.emptyList());
 
-            @Override
-            public boolean fromParam() {
-                return true;
-            }
-        };
+        return Optional.of(setterMethod)
+                .map(PsiMethodUtils::getPsiParameters).orElse(Collections.emptyList())
+                .stream()
+                .map(parameter->parseParameters(methodParameters, setterMethod))
+                .collect(Collectors.toList());
     }
+
+    private ClassInfo parseParameters(List<PsiParameter> methodParameters, PsiMethod setterMethod) {
+        for (PsiParameter methodParameter : methodParameters) {
+            Optional<ClassInfo> classInfoOpt = parseParameter(setterMethod, methodParameter);
+            if (classInfoOpt.isPresent()) {
+                return classInfoOpt.get();
+            }
+        }
+        return BasicClassInfo.NULL;
+    }
+
+    private Optional<ClassInfo> parseParameter(PsiMethod setterMethod, PsiParameter methodParameter) {
+        String resultName = setterMethod.getName().replaceFirst(MethodPrefixConstants.SET, MethodPrefixConstants.GET);
+        return Optional.of(methodParameter)
+                .map(PsiParameter::getType)
+                .map(PsiTypesUtil::getPsiClass)
+                .map(PsiClassUtils::extractGetMethods)
+                .stream()
+                .flatMap(Collection::stream)
+                .filter(method -> method.getName().equals(resultName))
+                .<ClassInfo>map(method -> {
+                    // TODO 根据参数匹配
+                    String instance = methodParameter.getName() + "." + method.getName() + "()";
+                    return new CustomClassInfo("", "", instance, Source.OTHER);
+                })
+                .findFirst();
+    }
+
+    //endregion
 }
