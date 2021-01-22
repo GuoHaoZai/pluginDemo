@@ -14,12 +14,13 @@
 
 package guohao.code.generator.utils;
 
-import com.intellij.psi.PsiModifier;
-import guohao.code.generator.actions.MethodPrefixConstants;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiTypesUtil;
+import guohao.code.generator.constant.MethodPrefixConstants;
 import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -122,5 +123,18 @@ public final class PsiClassUtils {
     }
     //endregion
 
-
+    /**
+     * 获取所属类
+     */
+    @Nullable
+    public static PsiClass buildFrom(@NotNull PsiElement element) {
+        PsiLocalVariable psiParent = PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class);
+        if (psiParent == null) {
+            return null;
+        }
+        if (!(psiParent.getParent() instanceof PsiDeclarationStatement)) {
+            return null;
+        }
+        return PsiTypesUtil.getPsiClass(psiParent.getType());
+    }
 }

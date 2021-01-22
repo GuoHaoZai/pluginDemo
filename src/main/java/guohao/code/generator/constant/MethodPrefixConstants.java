@@ -1,4 +1,4 @@
-package guohao.code.generator.actions;
+package guohao.code.generator.constant;
 
 /**
  * @author guohao
@@ -9,4 +9,6 @@ public class MethodPrefixConstants {
     public static final String GET = "get";
     public static final String WITH = "with";
     public static final String SET = "set";
+    public static final String BUILDER = "builder";
+
 }

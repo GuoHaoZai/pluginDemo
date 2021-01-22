@@ -12,7 +12,7 @@
  *    along with this program;
  */
 
-package guohao.code.generator.utils;
+package guohao.code.generator.constant;
 
 /**
  * 菜单名常量
@@ -23,10 +23,11 @@ package guohao.code.generator.utils;
 public final class MenuNameConstants {
     private MenuNameConstants() {}
 
+    public static final String GENERATOR = "generator";
+
     public static final String GENERATE_SETTER_METHOD = "Generate all setter with default value";
     public static final String GENERATE_SETTER_FROM_ARGS_METHOD = "Generate all setter from args";
     public static final String GENERATE_SETTER_METHOD_NO_DEFAULT_VALUE = "Generate all setter no default value";
 
     public static final String GENERATE_BUILDER_METHOD = "Generate builder chain call";
-    public static final String BUILDER_METHOD_NAME = "builder";
 }

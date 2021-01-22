@@ -8,6 +8,8 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
 import guohao.code.generator.actions.impl.GeneratorConfig;
+import guohao.code.generator.constant.MenuNameConstants;
+import guohao.code.generator.constant.MethodPrefixConstants;
 import guohao.code.generator.meta.BasicClassInfo;
 import guohao.code.generator.meta.ClassInfo;
 import guohao.code.generator.meta.CustomClassInfo;
@@ -53,7 +55,7 @@ public abstract class GenerateAllSetterBase extends PsiElementBaseIntentionActio
         Set<String> newImportList = new HashSet<>();
         Set<String> newSetterList = new HashSet<>();
 
-        for (PsiMethod setterMethod : getSetterMethods(localVariable)) {
+        for (PsiMethod setterMethod : PsiLocalVariableUtils.getSetterMethods(localVariable)) {
             StringJoiner setterStatement = new StringJoiner(",", localVariable.getName() + "." + setterMethod.getName() + "(", ");");
             for (ClassInfo paramInfo : setterMethodParamInfos(localVariable, setterMethod)) {
                 setterStatement.add(paramInfo.getInstance());
@@ -242,17 +244,6 @@ public abstract class GenerateAllSetterBase extends PsiElementBaseIntentionActio
 
     //region 工具方法
 
-    /**
-     * 获取当前变量所有的SETTER
-     *
-     * @param localVariable
-     * @return
-     */
-    @NotNull
-    private static List<PsiMethod> getSetterMethods(PsiLocalVariable localVariable) {
-        PsiClass psiClass = PsiTypesUtil.getPsiClass(localVariable.getType());
-        return PsiClassUtils.extractSetMethods(psiClass);
-    }
 
     //endregion
 
@@ -260,41 +251,11 @@ public abstract class GenerateAllSetterBase extends PsiElementBaseIntentionActio
     //region unknown
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
-        if (generatorConfig.forBuilder()) {
-            PsiClass localVarialbeContainingClass = getLocalVarialbeContainingClass(element);
-            if (localVarialbeContainingClass == null) {
-                return false;
-            }
-            PsiMethod[] methods = localVarialbeContainingClass.getMethods();
-            for (PsiMethod method : methods) {
-                if (method.getName().equals(MenuNameConstants.BUILDER_METHOD_NAME) && method.hasModifierProperty(PsiModifier.STATIC)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        return isValidAsLocalVariableWithSetterOrGetterMethod(element);
-    }
-
-
-    @NotNull
-    private Boolean isValidAsLocalVariableWithSetterOrGetterMethod(@NotNull PsiElement element) {
-        PsiClass psiClass = getLocalVarialbeContainingClass(element);
+        PsiClass psiClass = PsiClassUtils.buildFrom(element);
         if (psiClass == null) {
             return false;
         }
         return PsiClassUtils.hasSetterMethod(psiClass);
-    }
-
-    public static PsiClass getLocalVarialbeContainingClass(@NotNull PsiElement element) {
-        PsiLocalVariable psiParent = PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class);
-        if (psiParent == null) {
-            return null;
-        }
-        if (!(psiParent.getParent() instanceof PsiDeclarationStatement)) {
-            return null;
-        }
-        return PsiTypesUtil.getPsiClass(psiParent.getType());
     }
 
 
@@ -302,7 +263,7 @@ public abstract class GenerateAllSetterBase extends PsiElementBaseIntentionActio
     @NotNull
     @Override
     public String getFamilyName() {
-        return MenuNameConstants.GENERATE_SETTER_METHOD;
+        return MenuNameConstants.GENERATOR;
     }
     //endregion
 

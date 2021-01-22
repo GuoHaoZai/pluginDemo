@@ -15,7 +15,7 @@
 package guohao.code.generator.actions.impl;
 
 import guohao.code.generator.actions.GenerateAllSetterBase;
-import guohao.code.generator.utils.MenuNameConstants;
+import guohao.code.generator.constant.MenuNameConstants;
 import org.jetbrains.annotations.NotNull;
 
 /**
