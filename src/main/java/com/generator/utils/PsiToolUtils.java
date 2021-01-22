@@ -14,20 +14,19 @@
 
 package com.generator.utils;
 
-import com.generator.Parameters;
-import com.generator.RealParam;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
-import com.intellij.psi.util.PsiTypesUtil;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author guohao
@@ -35,107 +34,32 @@ import java.util.*;
  */
 public class PsiToolUtils {
 
-    public static boolean checkGuavaExist(@NotNull PsiElement element) {
-        Module moduleForPsiElement = ModuleUtilCore.findModuleForPsiElement(element);
-        if(moduleForPsiElement==null){
-            return false;
-        }
-        PsiClass[] lists = PsiShortNamesCache.getInstance(element.getProject())
-                .getClassesByName("Lists", GlobalSearchScope.moduleRuntimeScope(moduleForPsiElement, false));
-        for (PsiClass psiClass : lists) {
-            if (Objects.equals(psiClass.getQualifiedName(), "com.google.common.collect.Lists")){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @NotNull
-    public static Parameters extractParamInfo(PsiType psiType) {
-        String typeFullName = psiType.getCanonicalText();
-        Parameters info = new Parameters();
-        info.setReturnType(PsiTypesUtil.getPsiClass(psiType));
-        int u = typeFullName.indexOf("<");
-        if (u == -1) {
-            List<RealParam> realParamList = new ArrayList<>();
-            RealParam real = new RealParam(typeFullName, extractShortName(typeFullName));
-            realParamList.add(real);
-            info.setParams(realParamList);
-        } else {
-            String collectpart = typeFullName.substring(0, u);
-            String realClassPart = typeFullName.substring(u + 1, typeFullName.length() - 1);
-            info.setCollectName(extractShortName(collectpart));
-            info.setCollectPackege(collectpart);
-            String[] split = realClassPart.split(",");
-            List<RealParam> params = new ArrayList<>();
-            if (split.length > 0) {
-                for (String m : split) {
-                    RealParam param = new RealParam(m,extractShortName(m));
-                    params.add(param);
-                }
-            }
-            info.setParams(params);
-        }
-        return info;
-    }
-
-    public static void addImportToFile(PsiDocumentManager psiDocumentManager, PsiJavaFile containingFile, Document document, Set<String> newImportList) {
-        if (newImportList.size() > 0) {
-            Iterator<String> iterator = newImportList.iterator();
-            while (iterator.hasNext()) {
-                String u = iterator.next();
-                if (u.startsWith("java.lang")) {
-                    iterator.remove();
-                }
-            }
-        }
-
-        if (newImportList.size() > 0) {
-            PsiJavaFile javaFile = containingFile;
-            PsiImportStatement[] importStatements = javaFile.getImportList().getImportStatements();
-            Set<String> containedSet = new HashSet<>();
-            for (PsiImportStatement s : importStatements) {
-                containedSet.add(s.getQualifiedName());
-            }
-            StringBuilder newImportText = new StringBuilder();
-            for (String newImport : newImportList) {
-                if (!containedSet.contains(newImport)) {
-                    newImportText.append("\nimport " + newImport + ";");
-                }
-            }
-            PsiPackageStatement packageStatement = javaFile.getPackageStatement();
-            int start = 0;
-            if (packageStatement != null) {
-                start = packageStatement.getTextLength() + packageStatement.getTextOffset();
-            }
-            String insertText = newImportText.toString();
-            if (StringUtils.isNotBlank(insertText)) {
-                document.insertString(start, insertText);
-                PsiDocumentUtils.commitAndSaveDocument(psiDocumentManager, document);
-            }
-        }
-    }
-
-    @NotNull
-    public static String lowerStart(String name) {
-        return name.substring(0, 1).toLowerCase() + name.substring(1);
-    }
-
-    private static String extractShortName(String fullName) {
-        return fullName.substring(fullName.lastIndexOf(".") + 1);
+    /**
+     * 检查当前元素所在的模块是否包含guava类
+     */
+    public static boolean containGuava(@NotNull PsiElement element) {
+        PsiShortNamesCache shortNamesCache = PsiShortNamesCache.getInstance(element.getProject());
+        return Optional.of(element)
+                .map(ModuleUtilCore::findModuleForPsiElement)
+                .map(moduleForPsiElement -> {
+                    PsiClass[] lists = shortNamesCache.getClassesByName("Lists", GlobalSearchScope.moduleRuntimeScope(moduleForPsiElement, false));
+                    return Arrays.asList(lists);
+                })
+                .orElse(Collections.emptyList())
+                .stream()
+                .anyMatch(psiClass -> Objects.equals(psiClass.getQualifiedName(), "com.google.common.collect.Lists"));
     }
 
     /**
      * <p>'\n + 当前变量所在行行首的空格数'。</p>
-     * <p>用于在最后生成的的语句前填充。</p>
+     * <p>填充在生成的的语句前(格式化)。</p>
      */
     @NotNull
-    public static String calculateSplitText(PsiLocalVariable localVariable) {
-        Document document = PsiDocumentUtils.getDocument(localVariable);
+    public static String calculateSplitText(PsiElement element) {
+        Document document = PsiDocumentUtils.getDocument(element);
         StringBuilder result = new StringBuilder("\n");
 
-        int cur = localVariable.getParent().getTextOffset();
+        int cur = element.getParent().getTextOffset();
         String text = "";
         do {
             result.append(text);

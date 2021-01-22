@@ -18,15 +18,17 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiLocalVariable;
 
 /**
  * @author guohao
  * @since 2021/1/20
  */
 public class PsiDocumentUtils {
-    public static void commitAndSaveDocument(PsiDocumentManager psiDocumentManager, Document document) {
+
+    public static void commitAndSaveDocument(PsiElement element, Document document) {
+        PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(element.getProject());
         if (document != null) {
             psiDocumentManager.doPostponedOperationsAndUnblockDocument(document);
             psiDocumentManager.commitDocument(document);
@@ -34,10 +36,10 @@ public class PsiDocumentUtils {
         }
     }
 
-    public static Document getDocument(PsiLocalVariable localVariable){
-        Project project = localVariable.getProject();
+    public static Document getDocument(PsiElement element){
+        Project project = element.getProject();
         PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(project);
-        PsiFile containingFile = localVariable.getContainingFile();
+        PsiFile containingFile = element.getContainingFile();
         return psiDocumentManager.getDocument(containingFile);
     }
 }

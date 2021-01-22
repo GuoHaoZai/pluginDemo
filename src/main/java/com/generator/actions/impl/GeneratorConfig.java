@@ -24,14 +24,6 @@ public interface GeneratorConfig {
         return false;
     }
 
-    default boolean isFromMethod(){
-        return false;
-    }
-
-    default String formatLine(String line) {
-        return line;
-    }
-
     default boolean forBuilder() {
         return false;
     }

@@ -20,6 +20,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.guava/guava
     implementation("org.projectlombok","lombok","1.18.2")
     implementation("com.google.guava","guava", "30.0-jre")
+    implementation("org.apache.commons","commons-collections4", "4.1")
 
     annotationProcessor( "org.projectlombok","lombok","1.18.2")
 
@@ -27,9 +28,9 @@ dependencies {
     testImplementation("org.assertj", "assertj-core", "3.12.2")
 }
 
-
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
+    pluginName = "pluginDemo"
     version = "2020.3.1"
     setPlugins("com.intellij.modules.platform")
     setPlugins("com.intellij.modules.lang")
@@ -41,4 +42,10 @@ tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml
       Add change notes here.<br>
       <em>most HTML tags may be used</em>"""
     )
+}
+
+tasks {
+    runIde {
+        jbrVersion("jbr-11_0_7b765.65")
+    }
 }
