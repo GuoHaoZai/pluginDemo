@@ -12,9 +12,9 @@
  *    along with this program;
  */
 
-package com.generator.utils;
+package guohao.code.generator.utils;
 
-import com.generator.actions.MethodPrefixConstants;
+import guohao.code.generator.actions.MethodPrefixConstants;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiMethod;
 import org.apache.commons.collections.CollectionUtils;
@@ -50,14 +50,14 @@ public class PsiClassUtils {
     /**
      * 检查当前类(<b>包括父类</b>)是否包含SETTER
      */
-    public static boolean checkClassHasValidSetMethod(PsiClass psiClass) {
+    public static boolean hasSetterMethod(final PsiClass psiClass) {
         return CollectionUtils.isNotEmpty(extractSetMethods(psiClass));
     }
 
     /**
      * 检查当前类(<b>包括父类</b>)是否包含GETTER
      */
-    public static boolean checkClassHasGetMethod(final PsiClass psiClass) {
+    public static boolean hasGetterMethod(final PsiClass psiClass) {
         return CollectionUtils.isNotEmpty(extractGetMethods(psiClass));
     }
 

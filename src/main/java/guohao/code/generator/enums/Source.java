@@ -1,6 +1,6 @@
-package com.generator.enums;
+package guohao.code.generator.enums;
 
-import com.generator.utils.PsiToolUtils;
+import guohao.code.generator.utils.PsiToolUtils;
 import com.intellij.psi.PsiElement;
 
 import java.util.function.Predicate;

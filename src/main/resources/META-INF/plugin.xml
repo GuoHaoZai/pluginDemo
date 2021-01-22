@@ -1,7 +1,7 @@
 <idea-plugin>
-    <id>org.example.pluginDemo</id>
-    <name>我的模版代码生成器</name>
-    <vendor email="1347194676@qq.com" url="http://www.weli.com" />
+    <id>guohao.code.generator</id>
+    <name>myGenerator</name>
+    <vendor email="1347194676@qq.com" url="http://www.weli.cn" />
 
     <description>常用的模版代码生成器</description>
 
@@ -14,18 +14,18 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <intentionAction>
-            <className>com.generator.actions.impl.GenerateAllSetterAction</className>
+            <className>guohao.code.generator.actions.impl.GenerateAllSetterAction</className>
         </intentionAction>
         <intentionAction>
-            <className>com.generator.actions.impl.GenerateWithBuilderAction</className>
-        </intentionAction>
-
-        <intentionAction>
-            <className>com.generator.actions.impl.GenerateAllSetterNoDefaultValueAction</className>
+            <className>guohao.code.generator.actions.impl.GenerateWithBuilderAction</className>
         </intentionAction>
 
         <intentionAction>
-            <className>com.generator.actions.impl.GenerateAllSetterFromArgsAction</className>
+            <className>guohao.code.generator.actions.impl.GenerateAllSetterNoDefaultValueAction</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>guohao.code.generator.actions.impl.GenerateAllSetterFromArgsAction</className>
         </intentionAction>
     </extensions>
 </idea-plugin>

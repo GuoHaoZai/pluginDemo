@@ -12,7 +12,7 @@
  *    along with this program;
  */
 
-package com.generator.actions.impl;
+package guohao.code.generator.actions.impl;
 
 /**
  * @author guohao

@@ -3,7 +3,7 @@ plugins {
     java
 }
 
-group = "org.example"
+group = "guohao.code.generator"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -30,7 +30,7 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    pluginName = "pluginDemo"
+    pluginName = "myGenerator"
     version = "2020.3.1"
     setPlugins("com.intellij.modules.platform")
     setPlugins("com.intellij.modules.lang")

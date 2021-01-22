@@ -12,31 +12,22 @@
  *    along with this program;
  */
 
-package com.generator.actions.impl;
-
-import com.generator.actions.GenerateAllSetterBase;
-import com.generator.utils.MenuNameConstants;
-import org.jetbrains.annotations.NotNull;
+package guohao.code.generator.utils;
 
 /**
+ * 菜单名常量
+ *
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateAllSetterAction extends GenerateAllSetterBase {
-
-    @NotNull
-    @Override
-    public String getText() {
-        return MenuNameConstants.GENERATE_SETTER_METHOD;
+public final class MenuNameConstants {
+    private MenuNameConstants() {
     }
 
-    @Override
-    public GeneratorConfig getGeneratorConfig() {
-        return new GeneratorConfig() {
-            @Override
-            public boolean shouldAddDefaultValue() {
-                return true;
-            }
-        };
-    }
+    public static final String GENERATE_SETTER_METHOD = "Generate all setter with default value";
+    public static final String GENERATE_SETTER_FROM_ARGS_METHOD = "Generate all setter from args";
+    public static final String GENERATE_BUILDER_METHOD = "Generate builder chain call";
+    public static final String GENERATE_SETTER_METHOD_NO_DEAULT_VALUE = "Generate all setter no default value";
+
+    public static final String BUILDER_METHOD_NAME = "builder";
 }

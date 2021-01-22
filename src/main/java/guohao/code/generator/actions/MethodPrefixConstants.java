@@ -1,4 +1,4 @@
-package com.generator.actions;
+package guohao.code.generator.actions;
 
 /**
  * @author guohao

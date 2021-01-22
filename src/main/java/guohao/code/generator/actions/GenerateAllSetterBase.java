@@ -1,11 +1,5 @@
-package com.generator.actions;
+package guohao.code.generator.actions;
 
-import com.generator.actions.impl.GeneratorConfig;
-import com.generator.enums.BasicClassInfo;
-import com.generator.enums.ClassInfo;
-import com.generator.enums.CustomClassInfo;
-import com.generator.enums.Source;
-import com.generator.utils.*;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -13,6 +7,12 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
+import guohao.code.generator.actions.impl.GeneratorConfig;
+import guohao.code.generator.enums.BasicClassInfo;
+import guohao.code.generator.enums.ClassInfo;
+import guohao.code.generator.enums.CustomClassInfo;
+import guohao.code.generator.enums.Source;
+import guohao.code.generator.utils.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nls;
@@ -147,7 +147,7 @@ public abstract class GenerateAllSetterBase extends PsiElementBaseIntentionActio
      * @return 可以写入文件的文本
      */
     private String getSetterStatementsText(PsiElement element, Set<String> setterList) {
-        String splitText = PsiToolUtils.calculateSplitText(element);
+        String splitText = PsiToolUtils.calculateFormatString(element);
         return setterList.stream()
                 .reduce(new StringJoiner(splitText, splitText, "\n").setEmptyValue(StringUtils.EMPTY),
                         StringJoiner::add,
@@ -283,7 +283,7 @@ public abstract class GenerateAllSetterBase extends PsiElementBaseIntentionActio
         if (psiClass == null) {
             return false;
         }
-        return PsiClassUtils.checkClassHasValidSetMethod(psiClass);
+        return PsiClassUtils.hasSetterMethod(psiClass);
     }
 
     public static PsiClass getLocalVarialbeContainingClass(@NotNull PsiElement element) {

@@ -1,4 +1,4 @@
-package com.generator.enums;
+package guohao.code.generator.enums;
 
 /**
  * @author guohao

@@ -12,7 +12,7 @@
  *    along with this program;
  */
 
-package com.generator.utils;
+package guohao.code.generator.utils;
 
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;

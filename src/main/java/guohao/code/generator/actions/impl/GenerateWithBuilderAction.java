@@ -12,10 +12,10 @@
  *    along with this program;
  */
 
-package com.generator.actions.impl;
+package guohao.code.generator.actions.impl;
 
-import com.generator.actions.GenerateAllSetterBase;
-import com.generator.utils.MenuNameConstants;
+import guohao.code.generator.actions.GenerateAllSetterBase;
+import guohao.code.generator.utils.MenuNameConstants;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;

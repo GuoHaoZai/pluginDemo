@@ -12,7 +12,7 @@
  *    along with this program;
  */
 
-package com.generator.utils;
+package guohao.code.generator.utils;
 
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.module.ModuleUtilCore;
@@ -55,7 +55,7 @@ public class PsiToolUtils {
      * <p>填充在生成的的语句前(格式化)。</p>
      */
     @NotNull
-    public static String calculateSplitText(PsiElement element) {
+    public static String calculateFormatString(PsiElement element) {
         Document document = PsiDocumentUtils.getDocument(element);
         StringBuilder result = new StringBuilder("\n");
 
