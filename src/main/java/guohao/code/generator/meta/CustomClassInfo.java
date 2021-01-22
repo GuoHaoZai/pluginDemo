@@ -1,4 +1,4 @@
-package guohao.code.generator.enums;
+package guohao.code.generator.meta;
 
 /**
  * @author guohao
