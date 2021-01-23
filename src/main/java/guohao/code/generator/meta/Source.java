@@ -1,6 +1,6 @@
 package guohao.code.generator.meta;
 
-import guohao.code.generator.utils.PsiToolUtils;
+import guohao.code.utils.PsiToolUtils;
 import com.intellij.psi.PsiElement;
 
 import java.util.function.Predicate;
@@ -10,9 +10,9 @@ import java.util.function.Predicate;
  * @since 2021/1/21
  */
 public enum Source {
-    OTHER(-1, PsiToolUtils::containGuava),
+    OTHER(-1, element -> true),
     JAVA(0, element -> true),
-    GUAVA(1, PsiToolUtils::containGuava);
+    GUAVA(1, PsiToolUtils::hasGuavaLibrary);
 
     private final Integer index;
     private final Predicate<PsiElement> canUse;

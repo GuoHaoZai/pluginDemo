@@ -12,21 +12,20 @@
  *    along with this program;
  */
 
-package guohao.code.generator.utils;
+package guohao.code.utils;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.module.ModuleUtilCore;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiClass;
+import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.PsiShortNamesCache;
+import com.intellij.psi.PsiPackage;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
+import guohao.code.generator.constant.GlobalConstants;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author guohao
@@ -34,22 +33,28 @@ import java.util.Optional;
  */
 public final class PsiToolUtils {
 
-    private PsiToolUtils() {}
+    private PsiToolUtils() {
+    }
 
     /**
      * 检查当前元素所在的模块是否包含guava类
      */
-    public static boolean containGuava(@NotNull PsiElement element) {
-        PsiShortNamesCache shortNamesCache = PsiShortNamesCache.getInstance(element.getProject());
-        return Optional.of(element)
-                .map(ModuleUtilCore::findModuleForPsiElement)
-                .map(moduleForPsiElement -> {
-                    PsiClass[] lists = shortNamesCache.getClassesByName("Lists", GlobalSearchScope.moduleRuntimeScope(moduleForPsiElement, false));
-                    return Arrays.asList(lists);
-                })
-                .orElse(Collections.emptyList())
-                .stream()
-                .anyMatch(psiClass -> Objects.equals(psiClass.getQualifiedName(), "com.google.common.collect.Lists"));
+    public static boolean hasGuavaLibrary(@NotNull PsiElement element) {
+        return hasSpecialLibrary(element.getProject(), GlobalConstants.GUAVA_PACKAGE);
+    }
+
+    /**
+     * 判断当前项目中是否包含指定的库
+     *
+     * @param project     项目
+     * @param packageName 包路径
+     */
+    public static boolean hasSpecialLibrary(@NotNull Project project, String packageName) {
+        ApplicationManager.getApplication().assertReadAccessAllowed();
+        return CachedValuesManager.getManager(project).getCachedValue(project, () -> {
+            PsiPackage aPackage = JavaPsiFacade.getInstance(project).findPackage(packageName);
+            return new CachedValueProvider.Result<>(aPackage, ProjectRootManager.getInstance(project));
+        }) != null;
     }
 
     /**

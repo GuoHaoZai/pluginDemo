@@ -22,8 +22,8 @@ import guohao.code.generator.actions.AbstractGenerateSetterAction;
 import guohao.code.generator.meta.BasicClassInfo;
 import guohao.code.generator.meta.ClassInfo;
 import guohao.code.generator.plugin.BundleManager;
-import guohao.code.generator.utils.ClassNameUtils;
-import guohao.code.generator.utils.PsiMethodUtils;
+import guohao.code.utils.ClassNameUtils;
+import guohao.code.utils.PsiMethodUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;

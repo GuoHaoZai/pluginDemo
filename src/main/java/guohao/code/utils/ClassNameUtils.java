@@ -1,4 +1,4 @@
-package guohao.code.generator.utils;
+package guohao.code.utils;
 
 import org.apache.commons.lang.StringUtils;
 

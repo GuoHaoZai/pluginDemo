@@ -20,14 +20,11 @@ package guohao.code.generator.constant;
  * @author guohao
  * @since 2021/1/20
  */
-public final class MenuNameConstants {
-    private MenuNameConstants() {}
+public final class GlobalConstants {
+    private GlobalConstants() {}
 
-    public static final String GENERATOR = "generator";
-
-    public static final String GENERATE_SETTER_METHOD = "Generate all setter with default value";
-    public static final String GENERATE_SETTER_FROM_ARGS_METHOD = "Generate all setter from args";
-    public static final String GENERATE_SETTER_METHOD_NO_DEFAULT_VALUE = "Generate all setter no default value";
-
-    public static final String GENERATE_BUILDER_METHOD = "Generate builder chain call";
+    public static final String SIMULATOR_PACKAGE = "guohao.code.simulator";
+    public static final String GENERATOR_PACKAGE = "guohao.code.generator";
+    public static final String PROCESSOR_PACKAGE = "guohao.code.processor";
+    public static final String GUAVA_PACKAGE = "com.google.common.collect";
 }

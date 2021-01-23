@@ -12,7 +12,7 @@
  *    along with this program;
  */
 
-package guohao.code.generator.utils;
+package guohao.code.utils;
 
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
