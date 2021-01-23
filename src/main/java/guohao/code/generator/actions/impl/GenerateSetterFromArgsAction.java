@@ -20,12 +20,12 @@ import com.intellij.psi.PsiParameter;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
 import guohao.code.generator.actions.AbstractGenerateSetterAction;
-import guohao.code.generator.constant.MenuNameConstants;
 import guohao.code.generator.constant.MethodPrefixConstants;
 import guohao.code.generator.meta.BasicClassInfo;
 import guohao.code.generator.meta.ClassInfo;
 import guohao.code.generator.meta.CustomClassInfo;
 import guohao.code.generator.meta.Source;
+import guohao.code.generator.plugin.BundleManager;
 import guohao.code.generator.utils.PsiClassUtils;
 import guohao.code.generator.utils.PsiMethodUtils;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +45,7 @@ public class GenerateSetterFromArgsAction extends AbstractGenerateSetterAction {
     @NotNull
     @Override
     public String getText() {
-        return MenuNameConstants.GENERATE_SETTER_FROM_ARGS_METHOD;
+        return BundleManager.getGeneratorBundle("generator.setter.value.args");
     }
 
     //region 从方法入参提取参数

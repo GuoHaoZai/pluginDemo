@@ -21,11 +21,11 @@ dependencies {
     implementation("org.projectlombok","lombok","1.18.2")
     implementation("com.google.guava","guava", "30.0-jre")
     implementation("org.apache.commons","commons-collections4", "4.1")
+    implementation(fileTree(mapOf("dir" to "libs", "include" to "tools.jar")))
 
     annotationProcessor( "org.projectlombok","lombok","1.18.2")
 
     testImplementation("org.projectlombok","lombok","1.18.2")
-    testImplementation("org.assertj", "assertj-core", "3.12.2")
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/

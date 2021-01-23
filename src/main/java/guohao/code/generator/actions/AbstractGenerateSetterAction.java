@@ -6,8 +6,8 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
-import guohao.code.generator.constant.MenuNameConstants;
 import guohao.code.generator.meta.ClassInfo;
+import guohao.code.generator.plugin.BundleManager;
 import guohao.code.generator.utils.PsiClassUtils;
 import guohao.code.generator.utils.PsiDocumentUtils;
 import guohao.code.generator.utils.PsiLocalVariableUtils;
@@ -39,7 +39,7 @@ public abstract class AbstractGenerateSetterAction extends PsiElementBaseIntenti
     @NotNull
     @Override
     public String getFamilyName() {
-        return MenuNameConstants.GENERATOR;
+        return BundleManager.getProjectBundle("plugin.generator.settings.title");
     }
 
     @Override

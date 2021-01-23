@@ -17,10 +17,10 @@ package guohao.code.generator.actions.impl;
 import com.intellij.psi.PsiLocalVariable;
 import com.intellij.psi.PsiMethod;
 import guohao.code.generator.actions.AbstractGenerateSetterAction;
-import guohao.code.generator.constant.MenuNameConstants;
 import guohao.code.generator.meta.ClassInfo;
 import guohao.code.generator.meta.CustomClassInfo;
 import guohao.code.generator.meta.Source;
+import guohao.code.generator.plugin.BundleManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -35,7 +35,7 @@ public class GenerateSetterNoDefaultValueAction extends AbstractGenerateSetterAc
     @NotNull
     @Override
     public String getText() {
-        return MenuNameConstants.GENERATE_SETTER_METHOD_NO_DEFAULT_VALUE;
+        return BundleManager.getGeneratorBundle("generator.setter.value.null");
     }
 
     //region 生成空参数

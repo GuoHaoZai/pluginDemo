@@ -19,9 +19,9 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiType;
 import guohao.code.generator.actions.AbstractGenerateSetterAction;
-import guohao.code.generator.constant.MenuNameConstants;
 import guohao.code.generator.meta.BasicClassInfo;
 import guohao.code.generator.meta.ClassInfo;
+import guohao.code.generator.plugin.BundleManager;
 import guohao.code.generator.utils.ClassNameUtils;
 import guohao.code.generator.utils.PsiMethodUtils;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +41,7 @@ public class GenerateSetterAction extends AbstractGenerateSetterAction {
     @NotNull
     @Override
     public String getText() {
-        return MenuNameConstants.GENERATE_SETTER_METHOD;
+        return BundleManager.getGeneratorBundle("generator.setter.value.default");
     }
 
     //region 生成默认参数

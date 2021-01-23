@@ -25,8 +25,8 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.util.PsiTypesUtil;
 import com.intellij.util.IncorrectOperationException;
-import guohao.code.generator.constant.MenuNameConstants;
 import guohao.code.generator.constant.MethodPrefixConstants;
+import guohao.code.generator.plugin.BundleManager;
 import guohao.code.generator.utils.PsiClassUtils;
 import guohao.code.generator.utils.PsiDocumentUtils;
 import org.apache.commons.lang.StringUtils;
@@ -89,11 +89,11 @@ public class GenerateBuilderAction extends PsiElementBaseIntentionAction {
     @NotNull
     @Override
     public String getText() {
-        return MenuNameConstants.GENERATE_BUILDER_METHOD;
+        return BundleManager.getGeneratorBundle("generator.builder.method");
     }
 
     @Override
     public @NotNull @IntentionFamilyName String getFamilyName() {
-        return MenuNameConstants.GENERATOR;
+        return BundleManager.getProjectBundle("plugin.generator.settings.title");
     }
 }
