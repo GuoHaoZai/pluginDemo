@@ -25,7 +25,7 @@ import guohao.code.generator.meta.BasicClassInfo;
 import guohao.code.generator.meta.ClassInfo;
 import guohao.code.generator.meta.CustomClassInfo;
 import guohao.code.generator.meta.Source;
-import guohao.code.generator.plugin.BundleManager;
+import guohao.code.utils.BundleManager;
 import guohao.code.utils.PsiClassUtils;
 import guohao.code.utils.PsiMethodUtils;
 import org.jetbrains.annotations.NotNull;

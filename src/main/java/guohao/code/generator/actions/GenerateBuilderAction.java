@@ -26,7 +26,7 @@ import com.intellij.psi.PsiType;
 import com.intellij.psi.util.PsiTypesUtil;
 import com.intellij.util.IncorrectOperationException;
 import guohao.code.generator.constant.MethodPrefixConstants;
-import guohao.code.generator.plugin.BundleManager;
+import guohao.code.utils.BundleManager;
 import guohao.code.utils.PsiClassUtils;
 import guohao.code.utils.PsiDocumentUtils;
 import org.apache.commons.lang.StringUtils;

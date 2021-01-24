@@ -1,4 +1,4 @@
-package guohao.code.generator.plugin;
+package guohao.code.utils;
 
 import org.jetbrains.annotations.PropertyKey;
 

@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import guohao.code.generator.meta.ClassInfo;
-import guohao.code.generator.plugin.BundleManager;
+import guohao.code.utils.BundleManager;
 import guohao.code.utils.PsiClassUtils;
 import guohao.code.utils.PsiDocumentUtils;
 import guohao.code.utils.PsiLocalVariableUtils;

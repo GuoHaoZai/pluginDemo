@@ -27,5 +27,10 @@
         <intentionAction>
             <className>guohao.code.generator.actions.impl.GenerateSetterFromArgsAction</className>
         </intentionAction>
+
+        <lang.psiAugmentProvider implementation="guohao.code.simulator.SimulatorArgumentProvider"/>
+
+        <applicationService serviceImplementation="guohao.code.simulator.impl.UtilsModifierSimulator"/>
     </extensions>
+
 </idea-plugin>

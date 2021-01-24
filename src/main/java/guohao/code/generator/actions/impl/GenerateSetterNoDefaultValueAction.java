@@ -20,7 +20,7 @@ import guohao.code.generator.actions.AbstractGenerateSetterAction;
 import guohao.code.generator.meta.ClassInfo;
 import guohao.code.generator.meta.CustomClassInfo;
 import guohao.code.generator.meta.Source;
-import guohao.code.generator.plugin.BundleManager;
+import guohao.code.utils.BundleManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;

@@ -19,9 +19,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiPackage;
+import com.intellij.psi.*;
 import com.intellij.psi.util.CachedValueProvider;
 import com.intellij.psi.util.CachedValuesManager;
 import guohao.code.generator.constant.GlobalConstants;
@@ -37,10 +35,17 @@ public final class PsiToolUtils {
     }
 
     /**
-     * 检查当前元素所在的模块是否包含guava类
+     * 检查当前元素所在的模块是否包含guava库
      */
     public static boolean hasGuavaLibrary(@NotNull PsiElement element) {
         return hasSpecialLibrary(element.getProject(), GlobalConstants.GUAVA_PACKAGE);
+    }
+
+    /**
+     * 检查当前元素所在的模块是否包含simulator库
+     */
+    public static boolean hasSimulatorLibrary(@NotNull PsiElement element) {
+        return hasSpecialLibrary(element.getProject(), GlobalConstants.SIMULATOR_PACKAGE);
     }
 
     /**
@@ -73,5 +78,21 @@ public final class PsiToolUtils {
             text = document.getText(new TextRange(cur - 1, cur--));
         } while ((cur >= 1) && (text.equals(" ") || text.equals("\t")));
         return result.toString();
+    }
+
+    public static boolean isInnerClass(PsiElement element) {
+        return (element instanceof PsiClass && element.getParent() instanceof PsiClass && !((PsiClass) element.getParent()).isInterface());
+    }
+
+    public static boolean isStatic(PsiModifierList modifierList) {
+        return modifierList != null && modifierList.hasModifierProperty(PsiModifier.STATIC);
+    }
+
+    public static boolean isField(PsiElement element) {
+        return element instanceof PsiField;
+    }
+
+    public static boolean isMethod(PsiElement element) {
+        return element instanceof PsiMethod;
     }
 }

@@ -34,6 +34,14 @@ public final class PsiClassUtils {
     private PsiClassUtils() {}
 
     /**
+     * 判断当前element是否包含指定的注解类
+     */
+    public static boolean hasAnnotation(PsiElement element, String className){
+        return element instanceof PsiClass && ((PsiClass) element).hasAnnotation(className);
+    }
+
+
+    /**
      * 抽取出类(包括父类)的SETTER方法
      */
     @NotNull
