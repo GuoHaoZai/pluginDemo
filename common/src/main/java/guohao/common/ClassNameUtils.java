@@ -1,4 +1,4 @@
-package guohao.common.utils;
+package guohao.common;
 
 import org.apache.commons.lang.StringUtils;
 

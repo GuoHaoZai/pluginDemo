@@ -1,4 +1,4 @@
-package note;
+package guohao.note;
 
 import com.intellij.ide.bookmarks.BookmarkManager;
 import com.intellij.openapi.actionSystem.ActionManager;

@@ -3,7 +3,7 @@ package guohao.simulator;
 import com.intellij.psi.*;
 import com.intellij.psi.augment.PsiAugmentProvider;
 import com.intellij.psi.impl.source.PsiExtensibleClass;
-import guohao.common.utils.PsiToolUtils;
+import guohao.common.PsiToolUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -12,11 +12,11 @@
     <depends>com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <editor.linePainter implementation="note.DescriptionPainter"/>
+        <editor.linePainter implementation="guohao.note.DescriptionPainter"/>
     </extensions>
 
     <actions>
-        <action id="BookmarkWithDescription" class="note.EditNoteAction">
+        <action id="BookmarkWithDescription" class="guohao.note.EditNoteAction">
             <keyboard-shortcut first-keystroke="shift meta C" keymap="$default"/>
             <add-to-group group-id="GutterMenuBookmarks" anchor="before" relative-to-action="ToggleBookmark"/>
         </action>

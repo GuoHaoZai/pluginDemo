@@ -1,4 +1,4 @@
-group = "note"
+group = "guohao.note"
 version = "1.0-SNAPSHOT"
 
 dependencies {

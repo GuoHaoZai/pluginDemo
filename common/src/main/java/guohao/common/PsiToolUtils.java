@@ -12,7 +12,7 @@
  *    along with this program;
  */
 
-package guohao.common.utils;
+package guohao.common;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;

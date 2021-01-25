@@ -1,4 +1,4 @@
-package guohao.common.utils;
+package guohao.common;
 
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;

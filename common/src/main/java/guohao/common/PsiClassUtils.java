@@ -12,7 +12,7 @@
  *    along with this program;
  */
 
-package guohao.common.utils;
+package guohao.common;
 
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;

@@ -25,7 +25,10 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.util.PsiTypesUtil;
 import com.intellij.util.IncorrectOperationException;
-import guohao.common.utils.*;
+import guohao.common.BundleManager;
+import guohao.common.MethodPrefixConstants;
+import guohao.common.PsiClassUtils;
+import guohao.common.PsiDocumentUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 

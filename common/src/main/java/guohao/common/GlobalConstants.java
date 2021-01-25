@@ -12,7 +12,7 @@
  *    along with this program;
  */
 
-package guohao.common.utils;
+package guohao.common;
 
 /**
  * 菜单名常量
