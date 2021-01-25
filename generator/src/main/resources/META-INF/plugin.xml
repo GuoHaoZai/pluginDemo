@@ -1,0 +1,30 @@
+<idea-plugin>
+    <id>guohao.generator</id>
+    <name>Generator</name>
+    <vendor email="1347194676@qq.com"/>
+
+    <description>常用的模版代码生成器</description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <intentionAction>
+            <className>guohao.generator.actions.impl.GenerateSetterAction</className>
+        </intentionAction>
+        <intentionAction>
+            <className>guohao.generator.actions.GenerateBuilderAction</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>guohao.generator.actions.impl.GenerateSetterNoDefaultValueAction</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>guohao.generator.actions.impl.GenerateSetterFromArgsAction</className>
+        </intentionAction>
+    </extensions>
+
+</idea-plugin>

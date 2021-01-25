@@ -1,0 +1,20 @@
+<idea-plugin>
+    <id>guohao.simulator</id>
+    <name>Simulator</name>
+    <vendor email="1347194676@qq.com"/>
+
+    <description>模拟LomBok</description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <lang.psiAugmentProvider implementation="guohao.simulator.SimulatorArgumentProvider"/>
+        <applicationService serviceImplementation="guohao.simulator.UtilsModifierSimulator"/>
+    </extensions>
+
+</idea-plugin>

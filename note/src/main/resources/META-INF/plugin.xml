@@ -1,0 +1,24 @@
+<idea-plugin>
+    <id>guohao.note</id>
+    <name>Note</name>
+    <vendor email="1347194676@qq.com" />
+
+    <description>书签功能扩展</description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <editor.linePainter implementation="note.DescriptionPainter"/>
+    </extensions>
+
+    <actions>
+        <action id="BookmarkWithDescription" class="note.EditNoteAction">
+            <keyboard-shortcut first-keystroke="shift meta C" keymap="$default"/>
+            <add-to-group group-id="GutterMenuBookmarks" anchor="before" relative-to-action="ToggleBookmark"/>
+        </action>
+    </actions>
+</idea-plugin>
