@@ -11,5 +11,4 @@ public class MethodPrefixConstants {
     public static final String SET = "set";
     public static final String BUILDER = "builder";
     public static final String BUILD = "build";
-
 }

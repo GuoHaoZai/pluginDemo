@@ -21,7 +21,7 @@ import com.intellij.psi.PsiType;
 import guohao.generator.actions.AbstractGenerateSetterAction;
 import guohao.generator.meta.BasicClassInfo;
 import guohao.generator.meta.ClassInfo;
-import guohao.common.BundleManager;
+import guohao.generator.BundleManager;
 import guohao.common.ClassNameUtils;
 import guohao.common.PsiMethodUtils;
 import org.jetbrains.annotations.NotNull;

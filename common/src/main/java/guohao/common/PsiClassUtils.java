@@ -35,7 +35,7 @@ public final class PsiClassUtils {
     /**
      * 判断当前element是否包含指定的注解类
      */
-    public static boolean hasAnnotation(PsiElement element, String className){
+    public static boolean hasAnnotation(PsiElement element, String className) {
         return element instanceof PsiClass && ((PsiClass) element).hasAnnotation(className);
     }
 
@@ -66,7 +66,7 @@ public final class PsiClassUtils {
     /**
      * 当前类是否包含Builder方法
      */
-    public static boolean hasBuilderMethod(final PsiClass psiClass){
+    public static boolean hasBuilderMethod(final PsiClass psiClass) {
         PsiMethod[] methods = psiClass.getMethods();
         for (PsiMethod method : methods) {
             if (method.getName().equals(MethodPrefixConstants.BUILDER)
@@ -85,6 +85,7 @@ public final class PsiClassUtils {
     }
 
     //region 判断方法
+
     /**
      * 判断当前类是否是系统类(既jdk中的类)
      */
@@ -101,7 +102,7 @@ public final class PsiClassUtils {
     private static boolean isSetMethod(PsiMethod m) {
         return m.hasModifierProperty(PsiModifier.PUBLIC) &&
                 !m.hasModifierProperty(PsiModifier.STATIC) &&
-                (m.getName().startsWith(MethodPrefixConstants.SET) || m.getName().startsWith(MethodPrefixConstants.WITH));
+                (m.getName().startsWith(MethodPrefixConstants.SET));
     }
 
     /**
@@ -131,14 +132,14 @@ public final class PsiClassUtils {
         return Optional.ofNullable(psiClass)
                 .map(PsiClass::getSupers)
                 .map(Arrays::asList)
-                .map(list->{
+                .map(list -> {
                     List<PsiClass> result = new ArrayList<>(list);
                     result.add(psiClass);
                     return result;
                 })
                 .orElse(Collections.emptyList()).stream()
                 .filter(PsiClassUtils::isNotSystemClass)
-                .map(clazz->extractMethods(clazz, predicate))
+                .map(clazz -> extractMethods(clazz, predicate))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }

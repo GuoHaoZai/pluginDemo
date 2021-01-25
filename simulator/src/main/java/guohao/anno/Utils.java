@@ -1,6 +1,6 @@
 package guohao.anno;
 
-import guohao.simulator.UtilsModifierSimulator;
+import guohao.simulator.impl.UtilsModifierSimulator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

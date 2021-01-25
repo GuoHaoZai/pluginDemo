@@ -25,10 +25,8 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.util.PsiTypesUtil;
 import com.intellij.util.IncorrectOperationException;
-import guohao.common.BundleManager;
-import guohao.common.MethodPrefixConstants;
-import guohao.common.PsiClassUtils;
-import guohao.common.PsiDocumentUtils;
+import guohao.common.*;
+import guohao.generator.BundleManager;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,7 +42,8 @@ public class GenerateBuilderAction extends PsiElementBaseIntentionAction {
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
         PsiClass publicClass = PsiClassUtils.buildFrom(element);
         for (PsiMethod method : publicClass.getMethods()) {
-            if (method.getName().equals(MethodPrefixConstants.BUILDER)) {
+
+            if (PsiMethodUtils.isBuilderMethod(method)) {
 
                 PsiType returnType = method.getReturnType();
                 PsiClass buildClass = PsiTypesUtil.getPsiClass(returnType);
@@ -94,6 +93,6 @@ public class GenerateBuilderAction extends PsiElementBaseIntentionAction {
 
     @Override
     public @NotNull @IntentionFamilyName String getFamilyName() {
-        return BundleManager.getProjectBundle("plugin.generator.settings.title");
+        return BundleManager.getFamilyName("plugin.generator.family.name");
     }
 }

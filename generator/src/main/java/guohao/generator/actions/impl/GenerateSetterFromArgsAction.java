@@ -19,14 +19,12 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
-import guohao.generator.actions.AbstractGenerateSetterAction;
+import guohao.generator.BundleManager;
 import guohao.common.MethodPrefixConstants;
-import guohao.generator.meta.BasicClassInfo;
-import guohao.generator.meta.ClassInfo;
-import guohao.generator.meta.CustomClassInfo;
-import guohao.generator.meta.Source;
-import guohao.common.BundleManager;
 import guohao.common.PsiClassUtils;
+import guohao.common.PsiMethodUtils;
+import guohao.generator.actions.AbstractGenerateSetterAction;
+import guohao.generator.meta.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

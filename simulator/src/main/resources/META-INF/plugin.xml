@@ -14,7 +14,7 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <lang.psiAugmentProvider implementation="guohao.simulator.SimulatorArgumentProvider"/>
-        <applicationService serviceImplementation="guohao.simulator.UtilsModifierSimulator"/>
+        <applicationService serviceImplementation="guohao.simulator.impl.UtilsModifierSimulator"/>
     </extensions>
 
 </idea-plugin>

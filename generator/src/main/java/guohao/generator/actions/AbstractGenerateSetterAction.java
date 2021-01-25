@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import guohao.common.*;
+import guohao.generator.BundleManager;
 import guohao.generator.meta.ClassInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +36,7 @@ public abstract class AbstractGenerateSetterAction extends PsiElementBaseIntenti
     @NotNull
     @Override
     public String getFamilyName() {
-        return BundleManager.getProjectBundle("plugin.generator.settings.title");
+        return BundleManager.getFamilyName("plugin.generator.family.name");
     }
 
     @Override

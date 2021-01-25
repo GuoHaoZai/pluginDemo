@@ -3,6 +3,7 @@ package guohao.simulator;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.PsiElement;
+import guohao.simulator.impl.UtilsModifierSimulator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

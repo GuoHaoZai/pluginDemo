@@ -29,4 +29,8 @@ public final class PsiMethodUtils {
                 .map(Arrays::asList)
                 .orElse(Collections.emptyList());
     }
+
+    public static boolean isBuilderMethod(PsiMethod method) {
+        return method.getName().equals(MethodPrefixConstants.BUILDER);
+    }
 }

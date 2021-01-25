@@ -25,6 +25,7 @@ public final class GlobalConstants {
 
     public static final String SIMULATOR_PACKAGE = "guohao.simulator";
     public static final String GENERATOR_PACKAGE = "guohao.generator";
-    public static final String PROCESSOR_PACKAGE = "guohao.processor";
+    public static final String NOTE_PACKAGE = "guohao.note";
     public static final String GUAVA_PACKAGE = "com.google.common.collect";
+    public static final String LOMBOK_PACKAGE = "lombok";
 }

@@ -1,4 +1,4 @@
-package guohao.simulator;
+package guohao.simulator.impl;
 
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -6,6 +6,7 @@ import guohao.anno.Utils;
 import guohao.common.ClassNameUtils;
 import guohao.common.PsiClassUtils;
 import guohao.common.PsiToolUtils;
+import guohao.simulator.ModifierSimulator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
