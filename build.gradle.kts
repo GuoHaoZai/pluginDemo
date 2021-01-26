@@ -1,5 +1,6 @@
 plugins {
     id("org.jetbrains.intellij") version "0.6.5"
+    kotlin("jvm") version "1.4.20"
     java
 }
 
@@ -18,7 +19,10 @@ repositories {
 subprojects {
 
     apply(plugin = "java")
+    apply(plugin = "kotlin")
     apply(plugin = "org.jetbrains.intellij")
+
+    java.sourceCompatibility = JavaVersion.VERSION_11
 
     val developmentOnly by configurations.creating
 
