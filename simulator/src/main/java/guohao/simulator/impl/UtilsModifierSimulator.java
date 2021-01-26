@@ -3,7 +3,6 @@ package guohao.simulator.impl;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import guohao.anno.Utils;
-import guohao.common.ClassNameUtils;
 import guohao.common.PsiClassUtils;
 import guohao.common.PsiToolUtils;
 import guohao.simulator.ModifierSimulator;
@@ -27,19 +26,17 @@ import java.util.Set;
  */
 public class UtilsModifierSimulator implements ModifierSimulator {
 
-    private static final String CLASS_NAME = ClassNameUtils.getFullClassName(Utils.class);
-
     @Override
     public boolean isSupported(@NotNull PsiModifierList modifierList) {
         PsiElement parent = modifierList.getParent();
 
-        if (PsiClassUtils.hasAnnotation(parent, CLASS_NAME)) {
+        if (PsiClassUtils.hasAnnotation(parent, Utils.class)) {
             return validateOnAnnotated(((PsiClass) parent));
         }
 
         if (!PsiToolUtils.isField(parent) || !PsiToolUtils.isMethod(parent) || !PsiToolUtils.isInnerClass(parent)) {
             PsiClass containingClass = PsiTreeUtil.getParentOfType(parent, PsiClass.class, true);
-            return PsiClassUtils.hasAnnotation(containingClass, CLASS_NAME) && validateOnAnnotated(containingClass);
+            return PsiClassUtils.hasAnnotation(containingClass, Utils.class) && validateOnAnnotated(containingClass);
         }
 
         return false;
@@ -51,7 +48,7 @@ public class UtilsModifierSimulator implements ModifierSimulator {
 
         PsiElement parent = modifierList.getParent();
 
-        if (PsiClassUtils.hasAnnotation(parent, CLASS_NAME)) {
+        if (PsiClassUtils.hasAnnotation(parent, Utils.class)) {
             result.add(PsiModifier.FINAL);
         }
 

@@ -21,6 +21,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -35,10 +36,9 @@ public final class PsiClassUtils {
     /**
      * 判断当前element是否包含指定的注解类
      */
-    public static boolean hasAnnotation(PsiElement element, String className) {
-        return element instanceof PsiClass && ((PsiClass) element).hasAnnotation(className);
+    public static boolean hasAnnotation(PsiElement element, Class<? extends Annotation> annotationClass) {
+        return element instanceof PsiClass && ((PsiClass) element).hasAnnotation(annotationClass.getName());
     }
-
 
     /**
      * 抽取出类(包括父类)的SETTER方法

@@ -21,8 +21,4 @@ public final class ClassNameUtils {
         return realClassName;
     }
 
-    public static String getFullClassName(Class<?> clazz){
-        return clazz.getName();
-    }
-
 }
