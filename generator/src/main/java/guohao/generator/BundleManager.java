@@ -12,7 +12,7 @@ public final class BundleManager {
     /**
      * The {@link ResourceBundle} path.
      */
-    private static final String GENERATOR_BUNDLE_NAME = "GeneratorBundle.properties";
+    private static final String GENERATOR_BUNDLE_NAME = "GeneratorBundle";
 
     private static final ResourceBundle GENERATOR = ResourceBundle.getBundle(GENERATOR_BUNDLE_NAME);
 
