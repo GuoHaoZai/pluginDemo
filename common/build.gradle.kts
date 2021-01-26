@@ -1,6 +1,6 @@
 description = "common"
 group = "guohao"
-version = "0.1-SNAPSHOT"
+version = "1.0-SNAPSHOT"
 
 intellij {
     version = "2020.3.1"

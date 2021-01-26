@@ -4,6 +4,7 @@ plugins {
 }
 
 group = "guohao.generator"
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenLocal()

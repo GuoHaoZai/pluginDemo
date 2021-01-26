@@ -1,6 +1,7 @@
 description = "generator"
 group = "guohao"
-version = "0.1-SNAPSHOT"
+version = "1.0-SNAPSHOT"
+
 dependencies {
     implementation(project(":common"))
 }
