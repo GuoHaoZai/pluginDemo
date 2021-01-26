@@ -31,7 +31,7 @@ public class DescriptionPainter extends EditorLinePainter {
                 })
                 .map(bookmark -> {
                     TextAttributes textAttributes = new TextAttributes();
-                    textAttributes.setForegroundColor(JBColor.GRAY);
+                    textAttributes.setForegroundColor(JBColor.CYAN);
                     return Lists.newArrayList(new LineExtensionInfo(bookmark.getDescription(), textAttributes));
                 })
                 .orElse(new ArrayList<>(0));
