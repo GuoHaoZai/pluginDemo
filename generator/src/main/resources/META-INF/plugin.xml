@@ -25,6 +25,10 @@
         <intentionAction>
             <className>guohao.generator.actions.impl.GenerateSetterFromArgsAction</className>
         </intentionAction>
+
+        <intentionAction>
+            <className>guohao.generator.actions.GenerateFieldGeneralAction</className>
+        </intentionAction>
     </extensions>
 
 </idea-plugin>
