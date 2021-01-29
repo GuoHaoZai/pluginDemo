@@ -147,7 +147,7 @@ public abstract class AbstractGenerateSetterAction extends PsiElementBaseIntenti
      * @return 可以写入文件的文本
      */
     private String getSetterStatementsText(PsiElement element, Set<String> setterList) {
-        String splitText = PsiToolUtils.calculateFormatString(element);
+        String splitText = "\n" + PsiToolUtils.calculateLineHeaderToElementString(element);
         return setterList.stream()
                 .reduce(new StringJoiner(splitText, splitText, "\n").setEmptyValue(StringUtils.EMPTY),
                         StringJoiner::add,

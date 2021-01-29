@@ -15,7 +15,6 @@
 package guohao.common;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.TextRange;
@@ -23,6 +22,8 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.CachedValueProvider;
 import com.intellij.psi.util.CachedValuesManager;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 /**
  * @author guohao
@@ -62,21 +63,23 @@ public final class PsiToolUtils {
     }
 
     /**
-     * <p>'\n + 当前变量所在行行首的空格数'。</p>
-     * <p>填充在生成的的语句前(格式化)。</p>
+     * <p>计算给定PsiElement头到所在行行首的字符串。</p>
+     * <p>用于填充在生成的的语句前(格式化)。</p>
      */
     @NotNull
-    public static String calculateFormatString(PsiElement element) {
-        Document document = PsiDocumentUtils.getDocument(element);
-        StringBuilder result = new StringBuilder("\n");
-
-        int cur = element.getParent().getTextOffset();
-        String text = "";
-        do {
-            result.append(text);
-            text = document.getText(new TextRange(cur - 1, cur--));
-        } while ((cur >= 1) && (text.equals(" ") || text.equals("\t")));
-        return result.toString();
+    public static String calculateLineHeaderToElementString(PsiElement element) {
+        return Optional.ofNullable(element)
+                .map(PsiDocumentUtils::getDocument)
+                .map(document -> document.getText(new TextRange(0, element.getTextRange().getStartOffset())))
+                .map(String::toCharArray)
+                .map(chars -> {
+                    StringBuilder result = new StringBuilder();
+                    for (int i = chars.length - 1; i >= 0 && chars[i] != '\n'; i--) {
+                        result.append(chars[i]);
+                    }
+                    return result.toString();
+                })
+                .orElse("");
     }
 
     public static boolean isInnerClass(PsiElement element) {
