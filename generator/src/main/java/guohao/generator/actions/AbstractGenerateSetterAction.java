@@ -6,7 +6,11 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
-import guohao.common.*;
+import com.intellij.psi.util.PsiTypesUtil;
+import guohao.common.PsiClassUtils;
+import guohao.common.PsiDocumentUtils;
+import guohao.common.PsiLocalVariableUtils;
+import guohao.common.PsiToolUtils;
 import guohao.generator.BundleManager;
 import guohao.generator.meta.ClassInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -24,12 +28,13 @@ import java.util.stream.Collectors;
 public abstract class AbstractGenerateSetterAction extends PsiElementBaseIntentionAction {
 
     @Override
-    public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
-        PsiClass psiClass = PsiClassUtils.buildFrom(element);
-        if (psiClass == null) {
-            return false;
-        }
-        return PsiClassUtils.hasSetterMethod(psiClass);
+    public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
+        return Optional.of(psiElement)
+                .map(element -> PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class))
+                .filter(localVariable -> localVariable.getParent() instanceof PsiDeclarationStatement)
+                .map(localVariable -> PsiTypesUtil.getPsiClass(localVariable.getType()))
+                .map(PsiClassUtils::hasSetterMethod)
+                .orElse(Boolean.FALSE);
     }
 
     @Nls
@@ -42,12 +47,6 @@ public abstract class AbstractGenerateSetterAction extends PsiElementBaseIntenti
     @Override
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
         PsiLocalVariable localVariable = PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class);
-        if (localVariable == null) {
-            return;
-        }
-        if (!(localVariable.getParent() instanceof PsiDeclarationStatement)) {
-            return;
-        }
         handleLocalVariable(localVariable);
     }
 
@@ -72,7 +71,7 @@ public abstract class AbstractGenerateSetterAction extends PsiElementBaseIntenti
 
     /**
      * @param localVariable intention所在的变量
-     * @param setterMethod intention所在变量所在的方法
+     * @param setterMethod  intention所在变量所在的方法
      */
     protected abstract List<ClassInfo> parseMethod(PsiLocalVariable localVariable, PsiMethod setterMethod);
 
