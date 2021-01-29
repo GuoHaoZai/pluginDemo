@@ -1,11 +1,10 @@
 package guohao.common;
 
-import com.intellij.psi.*;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiTypesUtil;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiMethod;
 import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -31,7 +30,7 @@ public final class PsiClassUtils {
      */
     @NotNull
     public static List<PsiMethod> extractSetMethods(PsiClass psiClass) {
-        return extractAllMethods(psiClass, PsiClassUtils::isSetMethod);
+        return extractAllMethods(psiClass, PsiMethodUtils::isSetMethod);
     }
 
     /**
@@ -39,7 +38,16 @@ public final class PsiClassUtils {
      */
     @NotNull
     public static List<PsiMethod> extractGetMethods(PsiClass psiClass) {
-        return extractAllMethods(psiClass, PsiClassUtils::isGetMethod);
+        return extractAllMethods(psiClass, PsiMethodUtils::isGetMethod);
+    }
+
+    @NotNull
+    public static List<PsiMethod> extractBuildMethods(PsiClass psiClass) {
+        return extractAllMethods(psiClass, PsiMethodUtils::isBuilderMethod);
+    }
+
+    public static boolean hasMethod(PsiClass psiClass, Predicate<PsiMethod> psiMethodPredicate){
+        return CollectionUtils.isNotEmpty(PsiClassUtils.extractAllMethods(psiClass, psiMethodPredicate));
     }
 
     /**
@@ -53,14 +61,7 @@ public final class PsiClassUtils {
      * 当前类是否包含Builder方法
      */
     public static boolean hasBuilderMethod(final PsiClass psiClass) {
-        PsiMethod[] methods = psiClass.getMethods();
-        for (PsiMethod method : methods) {
-            if (method.getName().equals(MethodPrefixConstants.BUILDER)
-                    && method.hasModifierProperty(PsiModifier.STATIC)) {
-                return true;
-            }
-        }
-        return false;
+        return CollectionUtils.isNotEmpty(extractBuildMethods(psiClass));
     }
 
     /**
@@ -75,7 +76,7 @@ public final class PsiClassUtils {
     /**
      * 判断当前类是否是系统类(既jdk中的类)
      */
-    private static boolean isNotSystemClass(PsiClass psiClass) {
+    public static boolean isNotSystemClass(PsiClass psiClass) {
         return Optional.ofNullable(psiClass)
                 .map(PsiClass::getQualifiedName)
                 .map(qualifiedName -> !qualifiedName.startsWith("java."))
@@ -83,26 +84,10 @@ public final class PsiClassUtils {
     }
 
     /**
-     * 判断当前方法是否是SETTER
-     */
-    private static boolean isSetMethod(PsiMethod m) {
-        return m.hasModifierProperty(PsiModifier.PUBLIC) &&
-                !m.hasModifierProperty(PsiModifier.STATIC) &&
-                (m.getName().startsWith(MethodPrefixConstants.SET));
-    }
-
-    /**
-     * 判断当前方法是否是GETTER
-     */
-    private static boolean isGetMethod(PsiMethod m) {
-        return m.hasModifierProperty(PsiModifier.PUBLIC) && !m.hasModifierProperty(PsiModifier.STATIC) &&
-                (m.getName().startsWith(MethodPrefixConstants.GET) || m.getName().startsWith(MethodPrefixConstants.IS));
-    }
-
-    /**
      * 抽取出当前类的指定方法
      */
-    private static List<PsiMethod> extractMethods(PsiClass psiClass, Predicate<PsiMethod> predicate) {
+    @NotNull
+    public static List<PsiMethod> extractMethods(PsiClass psiClass, Predicate<PsiMethod> predicate) {
         return Optional.ofNullable(psiClass)
                 .map(PsiClass::getMethods)
                 .map(Arrays::asList)
@@ -114,7 +99,8 @@ public final class PsiClassUtils {
     /**
      * 抽取出类(包括父类,不包括系统类)的GETTER方法
      */
-    private static List<PsiMethod> extractAllMethods(final PsiClass psiClass, Predicate<PsiMethod> predicate) {
+    @NotNull
+    public static List<PsiMethod> extractAllMethods(final PsiClass psiClass, Predicate<PsiMethod> predicate) {
         return Optional.ofNullable(psiClass)
                 .map(PsiClass::getSupers)
                 .map(Arrays::asList)
@@ -130,19 +116,4 @@ public final class PsiClassUtils {
                 .collect(Collectors.toList());
     }
     //endregion
-
-    /**
-     * 获取所属类
-     */
-    @Nullable
-    public static PsiClass buildFrom(@NotNull PsiElement element) {
-        PsiLocalVariable psiParent = PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class);
-        if (psiParent == null) {
-            return null;
-        }
-        if (!(psiParent.getParent() instanceof PsiDeclarationStatement)) {
-            return null;
-        }
-        return PsiTypesUtil.getPsiClass(psiParent.getType());
-    }
 }

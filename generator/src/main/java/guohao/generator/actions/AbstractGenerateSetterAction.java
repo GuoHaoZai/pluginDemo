@@ -1,21 +1,15 @@
 package guohao.generator.actions;
 
-import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
 import guohao.common.PsiClassUtils;
 import guohao.common.PsiDocumentUtils;
 import guohao.common.PsiLocalVariableUtils;
 import guohao.common.PsiToolUtils;
-import guohao.generator.BundleManager;
 import guohao.generator.meta.ClassInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -25,35 +19,19 @@ import java.util.stream.Collectors;
  * @author guohao
  * @since 2021/1/20
  */
-public abstract class AbstractGenerateSetterAction extends PsiElementBaseIntentionAction {
+public abstract class AbstractGenerateSetterAction extends AbstractGenerateAction {
 
     @Override
-    public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
-        return Optional.of(psiElement)
-                .map(element -> PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class))
-                .filter(localVariable -> localVariable.getParent() instanceof PsiDeclarationStatement)
-                .map(localVariable -> PsiTypesUtil.getPsiClass(localVariable.getType()))
-                .map(PsiClassUtils::hasSetterMethod)
-                .orElse(Boolean.FALSE);
-    }
-
-    @Nls
-    @NotNull
-    @Override
-    public String getFamilyName() {
-        return BundleManager.getFamilyName("plugin.generator.family.name");
-    }
-
-    @Override
-    public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
-        PsiLocalVariable localVariable = PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class);
-        handleLocalVariable(localVariable);
+    protected boolean isExecute(@NotNull PsiLocalVariable localVariable) {
+        PsiClass psiClass = PsiTypesUtil.getPsiClass(localVariable.getType());
+        return PsiClassUtils.hasSetterMethod(psiClass);
     }
 
     /**
      * 本地变量处理
      */
-    private void handleLocalVariable(PsiLocalVariable localVariable) {
+    @Override
+    protected void handleLocalVariable(PsiLocalVariable localVariable) {
         Set<String> newImportList = new HashSet<>();
         Set<String> newSetterList = new HashSet<>();
 
