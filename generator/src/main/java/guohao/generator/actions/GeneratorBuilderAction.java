@@ -21,16 +21,16 @@ import java.util.StringJoiner;
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateBuilderAction extends AbstractGenerateAction {
+public class GeneratorBuilderAction extends AbstractGeneratorAction {
 
     @Override
-    protected boolean isExecute(@NotNull PsiLocalVariable localVariable) {
+    protected boolean canExecute(@NotNull PsiLocalVariable localVariable) {
         PsiClass psiClass = PsiTypesUtil.getPsiClass(localVariable.getType());
         return PsiClassUtils.hasBuilderMethod(psiClass);
     }
 
     @Override
-    protected void handleLocalVariable(PsiLocalVariable localVariable) {
+    protected void handleLocalVariable(@NotNull PsiLocalVariable localVariable) {
         PsiClass publicClass = PsiTypesUtil.getPsiClass(localVariable.getType());
         PsiClassUtils.extractBuildMethods(publicClass).stream().findFirst()
                 .ifPresent(buildMethod -> {

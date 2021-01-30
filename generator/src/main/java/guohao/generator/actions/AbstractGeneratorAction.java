@@ -14,17 +14,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 /**
+ * generator最抽象的层次。
+ * <p>
+ * 当前类及其子类只能对<b>本地变量</b>做处理。
+ *
  * @author guohao
  * @since 2021/1/29
  */
-public abstract class AbstractGenerateAction extends PsiElementBaseIntentionAction {
+public abstract class AbstractGeneratorAction extends PsiElementBaseIntentionAction {
 
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement psiElement) {
         return Optional.of(psiElement)
                 .map(element -> PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class))
                 .filter(localVariable -> localVariable.getParent() instanceof PsiDeclarationStatement)
-                .map(this::isExecute)
+                .map(this::canExecute)
                 .orElse(Boolean.FALSE);
     }
 
@@ -37,12 +41,15 @@ public abstract class AbstractGenerateAction extends PsiElementBaseIntentionActi
 
     @Override
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
-        PsiLocalVariable localVariable = PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class);
-        handleLocalVariable(localVariable);
+        Optional.ofNullable(PsiTreeUtil.getParentOfType(element, PsiLocalVariable.class))
+                .ifPresent(this::handleLocalVariable);
     }
 
-    protected abstract boolean isExecute(@NotNull PsiLocalVariable localVariable);
+    /**
+     * 判断当前Generator是否可以执行
+     */
+    protected abstract boolean canExecute(@NotNull PsiLocalVariable localVariable);
 
-    protected abstract void handleLocalVariable(PsiLocalVariable localVariable);
+    protected abstract void handleLocalVariable(@NotNull PsiLocalVariable localVariable);
 
 }

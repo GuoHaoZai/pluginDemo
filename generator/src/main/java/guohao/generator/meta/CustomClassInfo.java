@@ -9,13 +9,13 @@ public class CustomClassInfo implements ClassInfo{
     private final String fullClassName;
     private final String packageName;
     private final String instance;
-    private final Source source;
+    private final Library library;
 
-    public CustomClassInfo(String fullClassName, String packageName, String instance, Source source) {
+    public CustomClassInfo(String fullClassName, String packageName, String instance, Library library) {
         this.fullClassName = fullClassName;
         this.packageName = packageName;
         this.instance = instance;
-        this.source = source;
+        this.library = library;
     }
 
     @Override
@@ -24,8 +24,8 @@ public class CustomClassInfo implements ClassInfo{
     }
 
     @Override
-    public Source getSource() {
-        return source;
+    public Library getLibrary() {
+        return library;
     }
 
     @Override

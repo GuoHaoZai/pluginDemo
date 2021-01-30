@@ -5,7 +5,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTypesUtil;
 import guohao.common.PsiClassUtils;
 import guohao.common.PsiDocumentUtils;
-import guohao.common.PsiLocalVariableUtils;
+import guohao.common.PsiJavaFileUtils;
 import guohao.common.PsiToolUtils;
 import guohao.generator.meta.ClassInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -16,13 +16,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * SETTER方法Generator抽象。
+ *
  * @author guohao
  * @since 2021/1/20
  */
-public abstract class AbstractGenerateSetterAction extends AbstractGenerateAction {
+public abstract class AbstractGeneratorSetterAction extends AbstractGeneratorAction {
 
     @Override
-    protected boolean isExecute(@NotNull PsiLocalVariable localVariable) {
+    protected boolean canExecute(@NotNull PsiLocalVariable localVariable) {
         PsiClass psiClass = PsiTypesUtil.getPsiClass(localVariable.getType());
         return PsiClassUtils.hasSetterMethod(psiClass);
     }
@@ -31,11 +33,11 @@ public abstract class AbstractGenerateSetterAction extends AbstractGenerateActio
      * 本地变量处理
      */
     @Override
-    protected void handleLocalVariable(PsiLocalVariable localVariable) {
+    protected void handleLocalVariable(@NotNull PsiLocalVariable localVariable) {
         Set<String> newImportList = new HashSet<>();
         Set<String> newSetterList = new HashSet<>();
 
-        for (PsiMethod setterMethod : PsiLocalVariableUtils.getSetterMethods(localVariable)) {
+        for (PsiMethod setterMethod : PsiClassUtils.extractSetMethods(PsiTypesUtil.getPsiClass(localVariable.getType()))) {
             StringJoiner setterStatement = new StringJoiner(",", localVariable.getName() + "." + setterMethod.getName() + "(", ");");
             for (ClassInfo paramInfo : parseMethod(localVariable, setterMethod)) {
                 setterStatement.add(paramInfo.getInstance());
@@ -65,7 +67,7 @@ public abstract class AbstractGenerateSetterAction extends AbstractGenerateActio
         // 写入SETTER语句
         if (CollectionUtils.isNotEmpty(newSetterList)) {
 
-            String setterStatementsText = getSetterStatementsText(localVariable, newSetterList);
+            String setterStatementsText = generateSetterStatementsText(localVariable, newSetterList);
 
             if (StringUtils.isNotBlank(setterStatementsText)) {
                 int startOffset = localVariable.getParent().getTextRange().getEndOffset();
@@ -75,7 +77,7 @@ public abstract class AbstractGenerateSetterAction extends AbstractGenerateActio
         // 写入IMPORT语句
         if (CollectionUtils.isNotEmpty(newImportList)) {
 
-            String importStatementText = getImportStatementText(localVariable, newImportList);
+            String importStatementText = generateImportStatementsText(localVariable, newImportList);
 
             if (StringUtils.isNotBlank(importStatementText)) {
                 Integer startOffset = Optional.of(localVariable)
@@ -96,19 +98,17 @@ public abstract class AbstractGenerateSetterAction extends AbstractGenerateActio
      * @param importList 需要写入的import语句列表
      * @return 可以写入文件的文本
      */
-    private String getImportStatementText(PsiElement element, Set<String> importList) {
+    private String generateImportStatementsText(PsiElement element, Set<String> importList) {
         Set<String> existedImportList = Optional.of(element)
                 .map(variable -> (PsiJavaFile) variable.getContainingFile())
-                .map(PsiJavaFile::getImportList)
-                .map(PsiImportList::getImportStatements)
-                .map(Arrays::asList).orElse(Collections.emptyList())
-                .stream()
+                .map(PsiJavaFileUtils::getImportList)
+                .orElse(Collections.emptyList()).stream()
                 .map(PsiImportStatement::getQualifiedName)
                 .collect(Collectors.toSet());
 
         return importList.stream()
                 .filter(StringUtils::isEmpty)
-                .filter(existedImportList::contains)
+                .filter(importStatement-> !existedImportList.contains(importStatement))
                 .map(importStatement -> "import " + importStatement + ";")
                 .reduce(new StringJoiner("\n", "\n", "\n").setEmptyValue(StringUtils.EMPTY),
                         StringJoiner::add,
@@ -123,7 +123,7 @@ public abstract class AbstractGenerateSetterAction extends AbstractGenerateActio
      * @param setterList 需要写入的SETTER语句列表
      * @return 可以写入文件的文本
      */
-    private String getSetterStatementsText(PsiElement element, Set<String> setterList) {
+    private String generateSetterStatementsText(PsiElement element, Set<String> setterList) {
         String splitText = "\n" + PsiToolUtils.calculateLineHeaderToElementString(element);
         return setterList.stream()
                 .reduce(new StringJoiner(splitText, splitText, "\n").setEmptyValue(StringUtils.EMPTY),

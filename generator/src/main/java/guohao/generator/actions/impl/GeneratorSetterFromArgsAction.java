@@ -9,7 +9,7 @@ import guohao.generator.BundleManager;
 import guohao.common.MethodPrefixConstants;
 import guohao.common.PsiClassUtils;
 import guohao.common.PsiMethodUtils;
-import guohao.generator.actions.AbstractGenerateSetterAction;
+import guohao.generator.actions.AbstractGeneratorSetterAction;
 import guohao.generator.meta.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateSetterFromArgsAction extends AbstractGenerateSetterAction {
+public class GeneratorSetterFromArgsAction extends AbstractGeneratorSetterAction {
 
     @NotNull
     @Override
@@ -67,7 +67,7 @@ public class GenerateSetterFromArgsAction extends AbstractGenerateSetterAction {
                 .<ClassInfo>map(method -> {
                     // TODO 根据参数匹配
                     String instance = methodParameter.getName() + "." + method.getName() + "()";
-                    return new CustomClassInfo("", "", instance, Source.OTHER);
+                    return new CustomClassInfo("", "", instance, Library.OTHER);
                 })
                 .findFirst();
     }

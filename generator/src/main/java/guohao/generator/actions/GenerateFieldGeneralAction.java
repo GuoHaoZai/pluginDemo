@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * 用于在类的所有Field上添加字符串
+ * 在类的所有Field上添加指定字符串
  *
  * @author guohao
  * @since 2021/1/20
@@ -34,26 +34,28 @@ public class GenerateFieldGeneralAction extends PsiElementBaseIntentionAction {
         String fieldString = Messages.showInputDialog("", "输入插入的字符串", Messages.getInformationIcon());
         if (StringUtils.isNotBlank(fieldString)) {
             Optional.ofNullable(PsiTreeUtil.getParentOfType(element, PsiClass.class))
-                    .map(PsiClass::getFields)
-                    .map(Arrays::asList)
-                    .ifPresent(psiFields -> psiFields.forEach(psiField -> addFieldString(fieldString, psiField)));
+                    .map(psiClass -> Arrays.asList(psiClass.getFields()))
+                    .ifPresent(psiFields -> psiFields.forEach(psiField -> insertTextToFieldHeader(fieldString, psiField)));
         }
     }
 
     /**
      * 将字符串添加到field头
      *
-     * @param addedString 被添加的字符串
-     * @param psiField    field
+     * @param addedText 被添加的字符串
+     * @param psiField  field
      */
-    private void addFieldString(String addedString, PsiField psiField) {
+    private void insertTextToFieldHeader(String addedText, PsiField psiField) {
         Document document = PsiDocumentUtils.getDocument(psiField);
         TextRange textRange = psiField.getTextRange();
         String formatString = PsiToolUtils.calculateLineHeaderToElementString(psiField);
-        document.insertString(textRange.getStartOffset(), addedString + "\n" + formatString);
+        document.insertString(textRange.getStartOffset(), addedText + "\n" + formatString);
         PsiDocumentUtils.commitAndSaveDocument(psiField, document);
     }
 
+    /**
+     * 只有当前类中包含Field时才可用
+     */
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
         return Optional.of(element)

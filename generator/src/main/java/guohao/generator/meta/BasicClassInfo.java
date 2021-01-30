@@ -7,56 +7,56 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * 可以根据{@link BasicClassInfo#getSource()}和{@link BasicClassInfo#getFullClassName()}唯一确定一条记录
+ * 可以根据{@link BasicClassInfo#getLibrary()}和{@link BasicClassInfo#getFullClassName()}唯一确定一条记录
  */
 public enum BasicClassInfo implements ClassInfo{
-    GUAVA_LIST("java.util.List", "com.google.common.collect.Lists", "Lists.newArrayList()", Source.GUAVA),
-    GUAVA_MAP("java.util.Map", "com.google.common.collect.Maps", "Maps.newHashMap()", Source.GUAVA),
-    GUAVA_SET("java.util.Set", "com.google.common.collect.Sets", "Sets.newHashSet()", Source.GUAVA),
+    GUAVA_LIST("java.util.List", "com.google.common.collect.Lists", "Lists.newArrayList()", Library.GUAVA),
+    GUAVA_MAP("java.util.Map", "com.google.common.collect.Maps", "Maps.newHashMap()", Library.GUAVA),
+    GUAVA_SET("java.util.Set", "com.google.common.collect.Sets", "Sets.newHashSet()", Library.GUAVA),
 
-    JAVA_LIST("java.util.List", "java.util.ArrayList", "new ArrayList<>()", Source.JAVA),
-    JAVA_MAP("java.util.Map", "java.util.HashMap", "new HashMap<>()", Source.JAVA),
-    JAVA_SET("java.util.Set", "java.util.HashSet", "new HashSet<>()", Source.JAVA),
+    JAVA_LIST("java.util.List", "java.util.ArrayList", "new ArrayList<>()", Library.JAVA),
+    JAVA_MAP("java.util.Map", "java.util.HashMap", "new HashMap<>()", Library.JAVA),
+    JAVA_SET("java.util.Set", "java.util.HashSet", "new HashSet<>()", Library.JAVA),
 
     // 基础类型以及包装类不需要导入包
-    BOOLEAN("boolean", "", "false", Source.JAVA),
-    BOOLEAN_BOX("java.lang.Boolean", "", "false", Source.JAVA),
-    INTEGER("int", "", "0", Source.JAVA),
-    INTEGER_BOX("java.lang.Integer", "", "0", Source.JAVA),
-    BYTE("byte", "", "(byte)0", Source.JAVA),
-    BYTE_BOX("java.lang.Byte", "", "(byte)0", Source.JAVA),
-    STRING("java.lang.String", "", "\"\"", Source.JAVA),
-    LONG("long", "", "0L", Source.JAVA),
-    LONG_BOX("java.lang.Long", "", "0L", Source.JAVA),
-    SHORT("short", "", "(short)0", Source.JAVA),
-    SHORT_BOX("java.lang.Short", "", "(short)0", Source.JAVA),
-    FLOAT("float", "", "0F", Source.JAVA),
-    FLOAT_BOX("java.lang.Float", "", "0F", Source.JAVA),
-    DOUBLE("double", "", "0.0D", Source.JAVA),
-    DOUBLE_BOX("java.lang.Double", "", "0.0D", Source.JAVA),
-    CHAR("char", "", "''", Source.JAVA),
-    CHAR_BOX("java.lang.Character", "", "''", Source.JAVA),
+    BOOLEAN("boolean", "", "false", Library.JAVA),
+    BOOLEAN_BOX("java.lang.Boolean", "", "false", Library.JAVA),
+    INTEGER("int", "", "0", Library.JAVA),
+    INTEGER_BOX("java.lang.Integer", "", "0", Library.JAVA),
+    BYTE("byte", "", "(byte)0", Library.JAVA),
+    BYTE_BOX("java.lang.Byte", "", "(byte)0", Library.JAVA),
+    STRING("java.lang.String", "", "\"\"", Library.JAVA),
+    LONG("long", "", "0L", Library.JAVA),
+    LONG_BOX("java.lang.Long", "", "0L", Library.JAVA),
+    SHORT("short", "", "(short)0", Library.JAVA),
+    SHORT_BOX("java.lang.Short", "", "(short)0", Library.JAVA),
+    FLOAT("float", "", "0F", Library.JAVA),
+    FLOAT_BOX("java.lang.Float", "", "0F", Library.JAVA),
+    DOUBLE("double", "", "0.0D", Library.JAVA),
+    DOUBLE_BOX("java.lang.Double", "", "0.0D", Library.JAVA),
+    CHAR("char", "", "''", Library.JAVA),
+    CHAR_BOX("java.lang.Character", "", "''", Library.JAVA),
 
-    DATE("java.util.Date", "java.util.Date", "new Date()", Source.JAVA),
-    BIG_DECIMAL("java.math.BigDecimal", "java.math.BigDecimal", "new BigDecimal(\"0\")", Source.JAVA),
-    LOCAL_DATETIME("java.time.LocalDateTime", "java.time.LocalDateTime", "LocalDateTime.now()", Source.JAVA),
-    LOCAL_DATE("java.time.LocalDate", "java.time.LocalDate", "LocalDate.now()", Source.JAVA),
+    DATE("java.util.Date", "java.util.Date", "new Date()", Library.JAVA),
+    BIG_DECIMAL("java.math.BigDecimal", "java.math.BigDecimal", "new BigDecimal(\"0\")", Library.JAVA),
+    LOCAL_DATETIME("java.time.LocalDateTime", "java.time.LocalDateTime", "LocalDateTime.now()", Library.JAVA),
+    LOCAL_DATE("java.time.LocalDate", "java.time.LocalDate", "LocalDate.now()", Library.JAVA),
 
-    SQL_DATE("java.sql.Date", "java.sql.Date", "new Date(new java.util.Date().getTime())", Source.JAVA),
-    SQL_TIMESTAMP("java.sql.Timestamp", "java.sql.Timestamp", "new Timestamp(new java.util.Date().getTime())", Source.JAVA),
-    NULL("null", "", "null", Source.JAVA),
+    SQL_DATE("java.sql.Date", "java.sql.Date", "new Date(new java.util.Date().getTime())", Library.JAVA),
+    SQL_TIMESTAMP("java.sql.Timestamp", "java.sql.Timestamp", "new Timestamp(new java.util.Date().getTime())", Library.JAVA),
+    NULL("null", "", "null", Library.JAVA),
     ;
 
     private final String fullClassName;
     private final String packageName;
     private final String instance;
-    private final Source source;
+    private final Library library;
 
-    BasicClassInfo(String fullClassName, String packageName, String instance, Source source) {
+    BasicClassInfo(String fullClassName, String packageName, String instance, Library library) {
         this.fullClassName = fullClassName;
         this.packageName = packageName;
         this.instance = instance;
-        this.source = source;
+        this.library = library;
     }
 
     private static Map<String, BasicClassInfo> idMap;
@@ -64,21 +64,21 @@ public enum BasicClassInfo implements ClassInfo{
 
     static {
         idMap = Arrays.stream(BasicClassInfo.values())
-                .collect(Collectors.toMap(basicClassInfo -> generateId(basicClassInfo.getFullClassName(), basicClassInfo.getSource()), Function.identity()));
+                .collect(Collectors.toMap(basicClassInfo -> generateId(basicClassInfo.getFullClassName(), basicClassInfo.getLibrary()), Function.identity()));
         sortNameMap = Arrays.stream(BasicClassInfo.values())
                 .collect(Collectors.groupingBy(BasicClassInfo::getFullClassName));
     }
 
     /**
-     * 可以根据{@link BasicClassInfo#getSource()}和{@link BasicClassInfo#getFullClassName()}唯一确定一条记录
+     * 可以根据{@link BasicClassInfo#getLibrary()}和{@link BasicClassInfo#getFullClassName()}唯一确定一条记录
      *
      * @param sortName
-     * @param source
+     * @param library
      * @return
      */
     @NotNull
-    public static Optional<BasicClassInfo> get(String sortName, Source source) {
-        return Optional.ofNullable(idMap.get(generateId(sortName, source)));
+    public static Optional<BasicClassInfo> get(String sortName, Library library) {
+        return Optional.ofNullable(idMap.get(generateId(sortName, library)));
     }
 
     @NotNull
@@ -89,8 +89,8 @@ public enum BasicClassInfo implements ClassInfo{
     /**
      * 生成唯一标识
      */
-    private static String generateId(String fullClassName, Source source) {
-        return fullClassName + source.name();
+    private static String generateId(String fullClassName, Library library) {
+        return fullClassName + library.name();
     }
 
     @Override
@@ -99,8 +99,8 @@ public enum BasicClassInfo implements ClassInfo{
     }
 
     @Override
-    public Source getSource() {
-        return source;
+    public Library getLibrary() {
+        return library;
     }
 
     @Override

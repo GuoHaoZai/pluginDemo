@@ -4,7 +4,7 @@ import com.intellij.psi.PsiLocalVariable;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiType;
-import guohao.generator.actions.AbstractGenerateSetterAction;
+import guohao.generator.actions.AbstractGeneratorSetterAction;
 import guohao.generator.meta.BasicClassInfo;
 import guohao.generator.meta.ClassInfo;
 import guohao.generator.BundleManager;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @author guohao
  * @since 2021/1/20
  */
-public class GenerateSetterAction extends AbstractGenerateSetterAction {
+public class GeneratorSetterAction extends AbstractGeneratorSetterAction {
 
     @NotNull
     @Override
@@ -56,8 +56,8 @@ public class GenerateSetterAction extends AbstractGenerateSetterAction {
                 .map(ClassNameUtils::removeGeneric)
                 .map(BasicClassInfo::get).orElse(Collections.emptyList())
                 .stream()
-                .filter(basicClassInfo -> basicClassInfo.getSource().getCanUse().test(parameter))
-                .min(Comparator.comparingInt(cl -> cl.getSource().getIndex()))
+                .filter(basicClassInfo -> basicClassInfo.getLibrary().getCanUse().test(parameter))
+                .min(Comparator.comparingInt(cl -> cl.getLibrary().getIndex()))
                 .orElse(BasicClassInfo.NULL);
     }
     //endregion

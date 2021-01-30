@@ -12,9 +12,9 @@ public interface ClassInfo {
     String getFullClassName();
 
     /**
-     * 类的来源
+     * 所属类库
      */
-    Source getSource();
+    Library getLibrary();
 
     /**
      * 所在包名
