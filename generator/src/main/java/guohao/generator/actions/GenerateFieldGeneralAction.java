@@ -62,7 +62,7 @@ public class GenerateFieldGeneralAction extends PsiElementBaseIntentionAction {
                 .map(psiElement -> PsiTreeUtil.getParentOfType(psiElement, PsiClass.class))
                 .map(PsiClass::getFields)
                 .map(fields -> fields.length != 0)
-                .orElse(false);
+                .orElse(Boolean.FALSE);
     }
 
     @NotNull

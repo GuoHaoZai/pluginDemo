@@ -81,7 +81,7 @@ public abstract class AbstractGeneratorSetterAction extends AbstractGeneratorAct
 
             if (StringUtils.isNotBlank(importStatementText)) {
                 Integer startOffset = Optional.of(localVariable)
-                        .map(variable -> (PsiJavaFile) variable.getContainingFile())
+                        .flatMap(PsiJavaFileUtils::getPsiJavaFile)
                         .map(PsiJavaFile::getPackageStatement)
                         .map(packageStatement -> packageStatement.getTextLength() + packageStatement.getTextOffset())
                         .orElse(0);
@@ -100,12 +100,10 @@ public abstract class AbstractGeneratorSetterAction extends AbstractGeneratorAct
      */
     private String generateImportStatementsText(PsiElement element, Set<String> importList) {
         Set<String> existedImportList = Optional.of(element)
-                .map(variable -> (PsiJavaFile) variable.getContainingFile())
+                .flatMap(PsiJavaFileUtils::getPsiJavaFile)
                 .map(PsiJavaFileUtils::getImportList)
-                .orElse(Collections.emptyList()).stream()
-                .map(PsiImportStatement::getQualifiedName)
-                .collect(Collectors.toSet());
-
+                .map(importStatementList -> importStatementList.stream().map(PsiImportStatement::getQualifiedName).collect(Collectors.toSet()))
+                .orElse(Collections.emptySet());
         return importList.stream()
                 .filter(StringUtils::isEmpty)
                 .filter(importStatement-> !existedImportList.contains(importStatement))

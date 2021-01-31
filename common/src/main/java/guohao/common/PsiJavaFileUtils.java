@@ -1,14 +1,12 @@
 package guohao.common;
 
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiImportList;
 import com.intellij.psi.PsiImportStatement;
 import com.intellij.psi.PsiJavaFile;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author guohao
@@ -17,6 +15,13 @@ import java.util.Objects;
 public class PsiJavaFileUtils {
 
     private PsiJavaFileUtils() {
+    }
+
+    public static Optional<PsiJavaFile> getPsiJavaFile(PsiElement element) {
+        return Optional.ofNullable(element)
+                .map(PsiElement::getContainingFile)
+                .filter(file-> file instanceof PsiJavaFile)
+                .map(file-> (PsiJavaFile) file);
     }
 
     /**

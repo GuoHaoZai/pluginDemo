@@ -3,6 +3,9 @@ package guohao.common;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiVariable;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiTypesUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +19,44 @@ import java.util.stream.Collectors;
  * @since 2021/1/20
  */
 public final class PsiClassUtils {
-    private PsiClassUtils() {}
+    private PsiClassUtils() {
+    }
+
+    /**
+     * 获取变量声明所属的类
+     *
+     * <p>例如：对于下面的变量i返回的是Integer，而不是Main
+     * <pre>
+     *     public class Main {
+     *         Integer i;
+     *     }
+     * </pre>
+     *
+     * @see PsiClassUtils#getContainingPsiClass(PsiVariable)
+     */
+    @NotNull
+    public static Optional<PsiClass> getDeclarationPsiClass(PsiVariable variable) {
+        return Optional.ofNullable(variable)
+                .map(PsiVariable::getType)
+                .map(PsiTypesUtil::getPsiClass);
+    }
+
+    /**
+     * 获取变量所在的类
+     *
+     * <p>例如：对于下面的变量i返回的是Main，而不是Integer
+     * <pre>
+     *     public class Main {
+     *         Integer i;
+     *     }
+     * </pre>
+     *
+     * @see PsiClassUtils#getDeclarationPsiClass(PsiVariable)
+     */
+    public static Optional<PsiClass> getContainingPsiClass(PsiVariable variable) {
+        return Optional.ofNullable(variable)
+                .map(variable1 -> PsiTreeUtil.getParentOfType(variable1, PsiClass.class));
+    }
 
     /**
      * 判断当前element是否包含指定的注解类
@@ -46,7 +86,7 @@ public final class PsiClassUtils {
         return extractAllMethods(psiClass, PsiMethodUtils::isBuilderMethod);
     }
 
-    public static boolean hasMethod(PsiClass psiClass, Predicate<PsiMethod> psiMethodPredicate){
+    public static boolean hasMethod(PsiClass psiClass, Predicate<PsiMethod> psiMethodPredicate) {
         return CollectionUtils.isNotEmpty(PsiClassUtils.extractAllMethods(psiClass, psiMethodPredicate));
     }
 

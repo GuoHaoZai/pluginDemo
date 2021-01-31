@@ -1,9 +1,7 @@
 package guohao.common;
 
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiModifier;
-import com.intellij.psi.PsiParameter;
-import com.intellij.psi.PsiParameterList;
+import com.intellij.psi.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -17,7 +15,8 @@ import java.util.Optional;
  */
 public final class PsiMethodUtils {
 
-    private PsiMethodUtils() {}
+    private PsiMethodUtils() {
+    }
 
     /**
      * 获取方法的参数列表
@@ -43,7 +42,7 @@ public final class PsiMethodUtils {
     /**
      * 判断当前方法是否是Builder
      */
-    public static boolean isBuilderMethod(PsiMethod m){
+    public static boolean isBuilderMethod(PsiMethod m) {
         return m.getName().equals(MethodPrefixConstants.BUILDER) && m.hasModifierProperty(PsiModifier.STATIC);
     }
 
@@ -53,5 +52,34 @@ public final class PsiMethodUtils {
     public static boolean isGetMethod(PsiMethod m) {
         return m.hasModifierProperty(PsiModifier.PUBLIC) && !m.hasModifierProperty(PsiModifier.STATIC) &&
                 (m.getName().startsWith(MethodPrefixConstants.GET) || m.getName().startsWith(MethodPrefixConstants.IS));
+    }
+
+    /**
+     * 判断当前方法是否是Builder中Field方法
+     *
+     * 例如：以下案例中，i方法就是一个field方法
+     * <pre>
+     *     public class Main{
+     *          public static class Builder{
+     *              private Integer i;
+     *
+     *              public Builder i(Integer i){
+     *                  this.i = i;
+     *              }
+     *
+     *              public Main build(){
+     *                  return new Main();
+     *              }
+     *          }
+     *     }
+     * </pre>
+     *
+     * @param method
+     * @return
+     */
+    public static boolean isBuildFieldMethod(PsiMethod method) {
+        return !method.isConstructor() && !method.getName().equals("toString")
+                && !method.getName().equals(MethodPrefixConstants.BUILD)
+                && CollectionUtils.isNotEmpty(getPsiParameters(method));
     }
 }
