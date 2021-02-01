@@ -51,6 +51,13 @@ public final class PsiToolUtils {
     /**
      * <p>计算给定PsiElement头到所在行行首的字符串。</p>
      * <p>用于填充在生成的的语句前(格式化)。</p>
+     *
+     * 例如：element取下面的i,那返回值为"    "
+     * <pre>
+     *     public class Main{
+     *         private Integer i;
+     *     }
+     * </pre>
      */
     @NotNull
     public static String calculateLineHeaderToElementString(PsiElement element) {

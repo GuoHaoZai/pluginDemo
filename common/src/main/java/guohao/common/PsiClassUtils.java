@@ -1,5 +1,6 @@
 package guohao.common;
 
+import com.google.common.collect.Lists;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
@@ -53,8 +54,8 @@ public final class PsiClassUtils {
      *
      * @see PsiClassUtils#getDeclarationPsiClass(PsiVariable)
      */
-    public static Optional<PsiClass> getContainingPsiClass(PsiVariable variable) {
-        return Optional.ofNullable(variable)
+    public static Optional<PsiClass> getContainingPsiClass(PsiElement element) {
+        return Optional.ofNullable(element)
                 .map(variable1 -> PsiTreeUtil.getParentOfType(variable1, PsiClass.class));
     }
 
@@ -129,27 +130,16 @@ public final class PsiClassUtils {
     @NotNull
     public static List<PsiMethod> extractMethods(PsiClass psiClass, Predicate<PsiMethod> predicate) {
         return Optional.ofNullable(psiClass)
-                .map(PsiClass::getMethods)
-                .map(Arrays::asList)
-                .orElse(Collections.emptyList()).stream()
-                .filter(predicate)
-                .collect(Collectors.toList());
+                .map(clazz -> Arrays.asList(clazz.getMethods()))
+                .map(methods -> methods.stream().filter(predicate).collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
     }
-
     /**
      * 抽取出类(包括父类,不包括系统类)的GETTER方法
      */
     @NotNull
     public static List<PsiMethod> extractAllMethods(final PsiClass psiClass, Predicate<PsiMethod> predicate) {
-        return Optional.ofNullable(psiClass)
-                .map(PsiClass::getSupers)
-                .map(Arrays::asList)
-                .map(list -> {
-                    List<PsiClass> result = new ArrayList<>(list);
-                    result.add(psiClass);
-                    return result;
-                })
-                .orElse(Collections.emptyList()).stream()
+        return Lists.asList(psiClass, psiClass.getSupers()).stream()
                 .filter(PsiClassUtils::isNotSystemClass)
                 .map(clazz -> extractMethods(clazz, predicate))
                 .flatMap(Collection::stream)

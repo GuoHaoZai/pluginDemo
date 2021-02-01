@@ -12,6 +12,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
+import guohao.common.PsiClassUtils;
 import guohao.common.PsiDocumentUtils;
 import guohao.common.PsiToolUtils;
 import guohao.generator.BundleManager;
@@ -58,8 +59,7 @@ public class GenerateFieldGeneralAction extends PsiElementBaseIntentionAction {
      */
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
-        return Optional.of(element)
-                .map(psiElement -> PsiTreeUtil.getParentOfType(psiElement, PsiClass.class))
+        return PsiClassUtils.getContainingPsiClass(element)
                 .map(PsiClass::getFields)
                 .map(fields -> fields.length != 0)
                 .orElse(Boolean.FALSE);

@@ -17,11 +17,12 @@ public class PsiJavaFileUtils {
     private PsiJavaFileUtils() {
     }
 
+    @NotNull
     public static Optional<PsiJavaFile> getPsiJavaFile(PsiElement element) {
         return Optional.ofNullable(element)
                 .map(PsiElement::getContainingFile)
-                .filter(file-> file instanceof PsiJavaFile)
-                .map(file-> (PsiJavaFile) file);
+                .filter(file -> file instanceof PsiJavaFile)
+                .map(file -> (PsiJavaFile) file);
     }
 
     /**
@@ -29,12 +30,10 @@ public class PsiJavaFileUtils {
      */
     @NotNull
     public static List<PsiImportStatement> getImportList(PsiJavaFile psiJavaFile) {
-        PsiImportList existImportList = psiJavaFile.getImportList();
-        if (Objects.isNull(existImportList)) {
-            return Collections.emptyList();
-        }
-        PsiImportStatement[] importStatements = existImportList.getImportStatements();
-        return Arrays.asList(importStatements);
+        return Optional.ofNullable(psiJavaFile.getImportList())
+                .map(PsiImportList::getImportStatements)
+                .map(Arrays::asList)
+                .orElse(Collections.emptyList());
     }
 
 }
