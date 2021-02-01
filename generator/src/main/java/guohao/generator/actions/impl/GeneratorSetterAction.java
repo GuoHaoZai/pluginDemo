@@ -36,7 +36,7 @@ public class GeneratorSetterAction extends AbstractGeneratorSetterAction {
      * 解析SETTER方法
      */
     @Override
-    protected List<ClassInfo> parseMethod(PsiLocalVariable localVariable, PsiMethod setterMethod) {
+    protected List<ClassInfo> calculateNewSetterParamClassInfos(PsiLocalVariable localVariable, PsiMethod setterMethod) {
         return Optional.of(setterMethod)
                 .map(PsiMethodUtils::getPsiParameters)
                 .map(psiParameters -> psiParameters.stream().map(this::parseParameter).collect(Collectors.toList()))

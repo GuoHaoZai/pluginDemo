@@ -33,7 +33,7 @@ public final class PsiClassUtils {
      *     }
      * </pre>
      *
-     * @see PsiClassUtils#getContainingPsiClass(PsiVariable)
+     * @see PsiClassUtils#getContainingPsiClass(PsiElement)
      */
     @NotNull
     public static Optional<PsiClass> getDeclarationPsiClass(PsiVariable variable) {

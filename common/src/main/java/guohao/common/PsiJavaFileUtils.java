@@ -7,6 +7,7 @@ import com.intellij.psi.PsiJavaFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author guohao
@@ -36,4 +37,18 @@ public class PsiJavaFileUtils {
                 .orElse(Collections.emptyList());
     }
 
+    /**
+     * 获取元素所在java文件import列表的全类名
+     *
+     * @param element
+     * @return
+     */
+    @NotNull
+    public static Set<String> getImportLists(@NotNull PsiElement element) {
+        return Optional.of(element)
+                .flatMap(PsiJavaFileUtils::getPsiJavaFile)
+                .map(PsiJavaFileUtils::getImportList)
+                .map(importStatementList -> importStatementList.stream().map(PsiImportStatement::getQualifiedName).collect(Collectors.toSet()))
+                .orElse(Collections.emptySet());
+    }
 }

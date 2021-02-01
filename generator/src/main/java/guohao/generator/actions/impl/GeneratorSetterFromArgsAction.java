@@ -34,7 +34,7 @@ public class GeneratorSetterFromArgsAction extends AbstractGeneratorSetterAction
 
     //region 从方法入参提取参数
     @Override
-    protected List<ClassInfo> parseMethod(PsiLocalVariable localVariable, PsiMethod setterMethod) {
+    protected List<ClassInfo> calculateNewSetterParamClassInfos(PsiLocalVariable localVariable, PsiMethod setterMethod) {
         List<PsiParameter> methodParameters = Optional.of(localVariable)
                 .map(variable -> PsiTreeUtil.getParentOfType(variable, PsiMethod.class))
                 .map(PsiMethodUtils::getPsiParameters)

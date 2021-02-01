@@ -26,7 +26,7 @@ public class GeneratorSetterNoDefaultValueAction extends AbstractGeneratorSetter
 
     //region 生成空参数
     @Override
-    protected List<ClassInfo> parseMethod(PsiLocalVariable localVariable, PsiMethod setterMethod) {
+    protected List<ClassInfo> calculateNewSetterParamClassInfos(PsiLocalVariable localVariable, PsiMethod setterMethod) {
         return Collections.singletonList(new CustomClassInfo("", "", "", Library.OTHER));
     }
     //endregion
