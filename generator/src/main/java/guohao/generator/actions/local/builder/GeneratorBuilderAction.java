@@ -1,4 +1,4 @@
-package guohao.generator.actions;
+package guohao.generator.actions.local.builder;
 
 import com.intellij.openapi.editor.Document;
 import com.intellij.psi.PsiClass;
@@ -8,6 +8,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiTypesUtil;
 import guohao.common.*;
 import guohao.generator.BundleManager;
+import guohao.generator.actions.local.AbstractGeneratorAction;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,29 +57,34 @@ public class GeneratorBuilderAction extends AbstractGeneratorAction {
         String builderString = publicClass.getName() + "." + MethodPrefixConstants.BUILDER + "()\n";
         String buildString = "\n" + formatString + "\t\t" + "." + MethodPrefixConstants.BUILD + "();\n";
 
-        StringJoiner result = PsiClassUtils.extractMethods(buildClass, PsiMethodUtils::isBuildFieldMethod).stream()
+        return PsiClassUtils.extractMethods(buildClass, PsiMethodUtils::isBuildFieldMethod).stream()
                 .map(method -> generateBuilderMethodText(method, localVariable))
                 .map(buildText -> "\t\t" + formatString + buildText)
                 .reduce(new StringJoiner("\n", builderString, buildString),
                         StringJoiner::add,
-                        (a, b) -> new StringJoiner(""));
-        return result.toString();
+                        (a, b) -> new StringJoiner(""))
+                .toString();
     }
 
     private String generateBuilderMethodText(PsiMethod buildFiledMethod, PsiLocalVariable localVariable) {
-        String getterName = Optional.of(buildFiledMethod)
-                .map(PsiMethod::getName)
-                .map(StringUtils::capitalize)
-                .map(string -> MethodPrefixConstants.GET + string)
-                .orElseThrow();
+        String buildMethodName = buildFiledMethod.getName();
+        String getterMethodName = MethodPrefixConstants.GET + StringUtils.capitalize(buildMethodName);
 
         return Optional.of(localVariable)
                 .map(psiLocalVariable -> PsiTreeUtil.getParentOfType(psiLocalVariable, PsiMethod.class))
                 .map(PsiMethodUtils::getPsiParameters)
                 .map(parameters -> parameters.stream()
-                        .filter(parameter -> PsiClassUtils.hasMethod(PsiTypesUtil.getPsiClass(parameter.getType()),
-                                                                     method -> Objects.equals(method.getName(), getterName)))
-                        .map(parameter -> "." + buildFiledMethod.getName() + "(" + parameter.getName() + "." + getterName + "())")
+                        .map(parameter -> {
+                            if (StringUtils.equals(parameter.getName(), buildMethodName)) {
+                                return "." + buildMethodName + "(" + parameter.getName() +")";
+                            }
+                            PsiClass psiClass = PsiTypesUtil.getPsiClass(parameter.getType());
+                            if (PsiClassUtils.hasMethod(psiClass, method -> Objects.equals(method.getName(), getterMethodName))) {
+                                return "." + buildFiledMethod.getName() + "(" + parameter.getName() + "." + getterMethodName + "())";
+                            }
+                            return StringUtils.EMPTY;
+                        })
+                        .filter(StringUtils::isNotEmpty)
                         .findFirst()
                         .orElse("." + buildFiledMethod.getName() + "(null)"))
                 .orElseThrow();
