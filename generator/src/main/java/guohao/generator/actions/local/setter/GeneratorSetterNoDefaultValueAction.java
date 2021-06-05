@@ -1,12 +1,11 @@
-package guohao.generator.actions.impl;
+package guohao.generator.actions.local.setter;
 
 import com.intellij.psi.PsiLocalVariable;
 import com.intellij.psi.PsiMethod;
-import guohao.generator.actions.AbstractGeneratorSetterAction;
+import guohao.generator.BundleManager;
 import guohao.generator.meta.ClassInfo;
 import guohao.generator.meta.CustomClassInfo;
 import guohao.generator.meta.Library;
-import guohao.generator.BundleManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;

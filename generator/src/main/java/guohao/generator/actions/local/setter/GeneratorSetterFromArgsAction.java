@@ -1,4 +1,4 @@
-package guohao.generator.actions.impl;
+package guohao.generator.actions.local.setter;
 
 import com.intellij.psi.PsiLocalVariable;
 import com.intellij.psi.PsiMethod;
@@ -8,7 +8,7 @@ import guohao.common.MethodPrefixConstants;
 import guohao.common.PsiClassUtils;
 import guohao.common.PsiMethodUtils;
 import guohao.generator.BundleManager;
-import guohao.generator.actions.AbstractGeneratorSetterAction;
+import guohao.generator.actions.local.setter.AbstractGeneratorSetterAction;
 import guohao.generator.meta.BasicClassInfo;
 import guohao.generator.meta.ClassInfo;
 import guohao.generator.meta.CustomClassInfo;

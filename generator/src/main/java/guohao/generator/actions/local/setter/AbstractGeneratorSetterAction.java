@@ -1,4 +1,4 @@
-package guohao.generator.actions;
+package guohao.generator.actions.local.setter;
 
 import com.intellij.openapi.editor.Document;
 import com.intellij.psi.*;
@@ -7,6 +7,7 @@ import guohao.common.PsiClassUtils;
 import guohao.common.PsiDocumentUtils;
 import guohao.common.PsiJavaFileUtils;
 import guohao.common.PsiToolUtils;
+import guohao.generator.actions.local.AbstractGeneratorAction;
 import guohao.generator.meta.ClassInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;

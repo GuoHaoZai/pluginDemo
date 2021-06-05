@@ -12,22 +12,25 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <intentionAction>
-            <className>guohao.generator.actions.impl.GeneratorSetterAction</className>
+            <className>guohao.generator.actions.local.setter.GeneratorSetterAction</className>
         </intentionAction>
         <intentionAction>
-            <className>guohao.generator.actions.GeneratorBuilderAction</className>
-        </intentionAction>
-
-        <intentionAction>
-            <className>guohao.generator.actions.impl.GeneratorSetterNoDefaultValueAction</className>
+            <className>guohao.generator.actions.local.builder.GeneratorBuilderAction</className>
         </intentionAction>
 
         <intentionAction>
-            <className>guohao.generator.actions.impl.GeneratorSetterFromArgsAction</className>
+            <className>guohao.generator.actions.local.setter.GeneratorSetterNoDefaultValueAction</className>
         </intentionAction>
 
         <intentionAction>
-            <className>guohao.generator.actions.GenerateFieldGeneralAction</className>
+            <className>guohao.generator.actions.local.setter.GeneratorSetterFromArgsAction</className>
+        </intentionAction>
+
+        <intentionAction>
+            <className>guohao.generator.actions.global.FieldStringGeneratorAction</className>
+        </intentionAction>
+        <intentionAction>
+            <className>guohao.generator.actions.global.FieldAnnotationGenerateAction</className>
         </intentionAction>
     </extensions>
 

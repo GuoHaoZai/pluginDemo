@@ -1,4 +1,4 @@
-package guohao.generator.actions;
+package guohao.generator.actions.local;
 
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.openapi.editor.Editor;
