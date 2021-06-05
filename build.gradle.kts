@@ -4,11 +4,9 @@ plugins {
     java
 }
 
-group = "guohao.generator"
-version = "1.0-SNAPSHOT"
-
 repositories {
     mavenLocal()
+    maven("/Users/guohao/Downloads/ideaIC-2020.1.1.zip")
     maven("https://maven.aliyun.com/repository/jcenter")
     maven("https://maven.aliyun.com/repository/google")
     maven("https://maven.aliyun.com/repository/central")
@@ -17,6 +15,8 @@ repositories {
 }
 
 subprojects {
+    group = "guohao.pluginDemo"
+    version = "1.0-SNAPSHOT"
 
     apply(plugin = "java")
     apply(plugin = "kotlin")
@@ -35,6 +35,13 @@ subprojects {
         }
     }
 
+    intellij {
+        version = "2020.1.1"
+        setPlugins("com.intellij.modules.platform")
+        setPlugins("com.intellij.modules.lang")
+        setPlugins("com.intellij.java")
+    }
+
     repositories {
         mavenLocal()
         maven("https://maven.aliyun.com/repository/jcenter")
@@ -45,13 +52,13 @@ subprojects {
     }
 
     dependencies {
-        implementation("com.google.guava","guava", "30.0-jre")
-        implementation("org.apache.commons","commons-collections4", "4.1")
+        implementation("com.google.guava", "guava", "30.0-jre")
+        implementation("org.apache.commons", "commons-collections4", "4.1")
         implementation(fileTree(mapOf("dir" to "libs", "include" to "tools.jar")))
 
-        implementation("org.projectlombok","lombok","1.18.2")
-        annotationProcessor( "org.projectlombok","lombok","1.18.2")
-        testImplementation("org.projectlombok","lombok","1.18.2")
+        implementation("org.projectlombok", "lombok", "1.18.2")
+        annotationProcessor("org.projectlombok", "lombok", "1.18.2")
+        testImplementation("org.projectlombok", "lombok", "1.18.2")
     }
 }
 
