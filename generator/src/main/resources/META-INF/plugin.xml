@@ -32,6 +32,10 @@
         <intentionAction>
             <className>guohao.generator.actions.global.FieldAnnotationGenerateAction</className>
         </intentionAction>
+
+        <intentionAction>
+            <className>guohao.generator.actions.global.MethodAnnotationGeneratorAction</className>
+        </intentionAction>
     </extensions>
 
 </idea-plugin>

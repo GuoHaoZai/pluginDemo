@@ -36,7 +36,7 @@ subprojects {
     }
 
     intellij {
-        version = "2020.1.1"
+        version = "2020.3.2"
         setPlugins("com.intellij.modules.platform")
         setPlugins("com.intellij.modules.lang")
         setPlugins("com.intellij.java")

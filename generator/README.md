@@ -1,4 +1,4 @@
-学习如何编写idea插件。
+# 模版代码生成器
 
 >基于[generateAllSetMethod](https://github.com/gejun123456/intellij-generateAllSetMethod)
 进行代码优化，并删除了不常用的功能(主要是代码看不懂=_=)。
