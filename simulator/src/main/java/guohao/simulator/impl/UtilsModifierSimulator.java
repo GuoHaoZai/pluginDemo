@@ -16,7 +16,7 @@ import java.util.Set;
  *
  * <p>作用：</p>
  * <ol>
- *      <li> 对类中所有的Field、Method、InnerClass添加STATIC修饰符</li>
+ *      <li>对类中所有的Field、Method、InnerClass添加STATIC修饰符</li>
  *      <li>对当前类添加FINAL修饰符</li>
  * </ol>
  *

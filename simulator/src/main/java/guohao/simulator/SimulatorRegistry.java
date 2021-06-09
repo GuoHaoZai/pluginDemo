@@ -1,6 +1,5 @@
 package guohao.simulator;
 
-import com.google.common.collect.Sets;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.PsiElement;
 import guohao.simulator.impl.UtilsModifierSimulator;
@@ -41,17 +40,18 @@ public final class SimulatorRegistry {
 
     @NotNull
     private static Set<Simulator> getSimulatorTable() {
-        return Sets.<Simulator>newHashSet(
-        ).stream().filter(Objects::nonNull).collect(Collectors.toSet());
+        Set<Simulator> modifierSimulators = new HashSet<>();
+
+        return modifierSimulators;
     }
 
     @NotNull
     private static Set<ModifierSimulator> getModifierSimulatorTable() {
-        return Sets.<ModifierSimulator>newHashSet(ApplicationManager.getApplication().getService(UtilsModifierSimulator.class))
-                .stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
+        Set<ModifierSimulator> modifierSimulators = new HashSet<>();
 
+        modifierSimulators.add(ApplicationManager.getApplication().getService(UtilsModifierSimulator.class));
+
+        return modifierSimulators;
     }
     //endregion
 

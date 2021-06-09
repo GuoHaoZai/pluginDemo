@@ -6,7 +6,6 @@ plugins {
 
 repositories {
     mavenLocal()
-    maven("/Users/guohao/Downloads/ideaIC-2020.1.1.zip")
     maven("https://maven.aliyun.com/repository/jcenter")
     maven("https://maven.aliyun.com/repository/google")
     maven("https://maven.aliyun.com/repository/central")
@@ -54,7 +53,6 @@ subprojects {
     dependencies {
         implementation("com.google.guava", "guava", "30.0-jre")
         implementation("org.apache.commons", "commons-collections4", "4.1")
-        implementation(fileTree(mapOf("dir" to "libs", "include" to "tools.jar")))
 
         implementation("org.projectlombok", "lombok", "1.18.2")
         annotationProcessor("org.projectlombok", "lombok", "1.18.2")
